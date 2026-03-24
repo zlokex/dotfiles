@@ -1,0 +1,146 @@
+"  ___    _        __   ___
+"  |_ _|__| |___ __ \ \ / (_)_ __
+"   | |/ _` / -_) _` \ V /| | '  \
+"  |___\__,_\___\__,_|\_/ |_|_|_|_|
+"
+
+" .ideavimrc is a configuration file for IdeaVim plugin. It uses
+"   the same commands as the original .vimrc configuration.
+" You can find a list of commands here: https://jb.gg/h38q75
+" Find more examples here: https://jb.gg/share-ideavimrc
+
+" Source your .vimrc
+" source ~/.vimrc
+
+function! MapBoth(keys, rhs)
+  execute 'noremap' a:keys a:rhs " Normal, visual & operator pending modes
+  execute 'noremap!' a:keys '<C-O>' . a:rhs " Insert & command line modes
+endfunction
+
+" Example usage:
+"call MapBoth('<F2>', ':write<CR>')
+
+" COMMANDS --------------------------------------------------------------------------------------------------------- {{{
+
+""" SEARCH
+set incsearch                   " search while typing
+set hlsearch                    " highlight search
+set ignorecase                  " ignore case in searches
+set smartcase                   " if search contains uppercase letter, use case-sensetive search
+
+""" LINES
+set scrolloff=15                 " scroll if close to the beginning of the file or to the end
+set number                      " set lines numbers
+set relativenumber              " make numbers relative
+
+""" AUDIBLE BELL
+set visualbell
+set noerrorbells
+
+set textwidth=0  " Disable hard wrap
+set colorcolumn=120 " Show vertical line at 120
+
+" Enable Shift + arrow key selection
+set selectmode=key
+set keymodel+=startsel,stopsel,stopselect
+
+" To reset a specific IdeaVim option to its default value, use the & syntax:
+" :set {option}& (e.g., :set ideavimsupport& to reset how IdeaVim handles dialogs)
+
+" Track action IDs in IdeaVim
+" set trackactionids
+
+" }}}
+
+" IDEAVIM PLUGINS https://jb.gg/ideavim-plugins -------------------------------------------------------------------- {{{
+
+" Highlight copied text
+Plug 'machakann/vim-highlightedyank'
+" Commentary plugin https://github.com/tpope/vim-commentary/blob/master/doc/commentary.txt
+Plug 'tpope/vim-commentary'
+" NERDTree https://github.com/JetBrains/ideavim/wiki/NERDTree-support
+Plug 'preservim/nerdtree'
+" Ideajoin - https://github.com/JetBrains/ideavim/blob/master/doc/ideajoin-examples.md
+set ideajoin
+" }}}
+
+" INTELLIJ PLUGINS ------------------------------------------------------------------------------------------------- {{{
+
+"Quickscope - Highlight unique characters in each word when using f/F/t/T
+set quickscope
+" FunctionTextObj - provides if and af to operate on functions
+" set functiontextobj
+" https://plugins.jetbrains.com/plugin/28333-vim-anyobject
+set anyobject
+" Shows register contents in a popup window when pressing " in normal mode or Ctrl-R in insert mode.
+set peekaboo
+
+" }}}
+
+"" -- MAPPINGS ----------------------------------------------------------------------------------------------------- {{{
+" map / noremap: Normal, Visual, and Operator-pending modes.
+" nmap / nnoremap: Normal mode only.
+" imap / inoremap: Insert mode only.
+" vmap / vnoremap: Visual mode only.
+" omap / onoremap: Operator-pending mode (e.g., waiting for d or y).
+" cmap / cnoremap: Command-line mode.
+" tmap / tnoremap: Terminal mode.
+
+
+""" LEADER
+let mapleader = " "
+let maplocalleader = ","
+
+""" VIM specfic
+
+" Map jk to Esc (Exit insert mode)
+" https://www.ordspill.com/wordfeud/ord-som-inneholder/?q=JK
+" https://www.merriam-webster.com/wordfinder/classic/contains/all/-1/jk/1
+inoremap jk <Esc>
+
+" Don't use Ex mode, use Q for formatting.
+noremap Q gq
+
+" edit ideavim config
+nnoremap <leader>vv :e ~/.ideavimrc<CR>
+
+" source ideavim config
+nnoremap <leader>vr :source ~/.ideavimrc<CR>
+
+" Clear search highlighting
+nnoremap <leader>h :nohlsearch<CR>
+
+
+""" IDE specific
+
+" Map IDE actions to IdeaVim -- https://jb.gg/abva4t"" Map \r to the Reformat Code action
+noremap \r <Action>(ReformatCode)
+"" Map \b to toggle the breakpoint on the current line
+noremap \b <Action>(ToggleLineBreakpoint)
+"" Map <leader>d to start debug
+noremap <leader>d <Action>(Debug)
+
+
+" Search Everywhere action
+nnoremap <leader>sf :action SearchEverywhere<CR>
+
+nnoremap <C-W> :action CloseEditor<CR>
+
+" Change font size
+nnoremap + :action EditorIncreaseFontSize<CR>
+nnoremap - :action EditorDecreaseFontSize<CR>
+nnoremap <leader>= :action EditorResetFontSize<CR>
+
+" Duplicate line
+call MapBoth('<C-d>', ':action EditorDuplicate<CR>')
+
+""" IDE Plugin Specific
+
+nnoremap gqq :action com.andrewbrookins.idea.wrap.WrapAction<CR> cc
+vnoremap gq :action com.andrewbrookins.idea.wrap.WrapAction<CR>
+" Open Claude Code in terminal
+nnoremap <leader>cc :action com.anthropic.code.plugin.actions.OpenClaudeInTerminalAction<CR>
+" Toggle IdeaVim
+noremap <C-S-q> :action VimPluginToggle<CR>
+
+" }}}
