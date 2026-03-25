@@ -106,7 +106,7 @@ show_file_or_dir_preview="\
 if [ -d {} ]; then
     lsd --tree --color=always {} | head -200
 elif file -b --mime-type {} | grep -q ^image/; then
-    chafa --fit-width --size=\${FZF_PREVIEW_COLUMNS}x\${FZF_PREVIEW_LINES} {}
+    chafa --format=symbols --fit-width --size=\${FZF_PREVIEW_COLUMNS}x\${FZF_PREVIEW_LINES} {}
 else
     bat -n --color=always --line-range :500 {}
 fi"
