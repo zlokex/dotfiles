@@ -1,4 +1,33 @@
-# history setup
+####################
+#   ____   _       #
+#  |_  /__| |_     #
+#   / /(_-< ' \    #
+#  /___/__/_||_|   #
+#                  #
+####################
+
+# ---- lsd (better ls) ----
+alias ls="lsd --color=always --long --git --icon=always"
+
+# ---- Zoxide (better cd) ----
+eval "$(zoxide init zsh)"
+alias cd="z"
+
+# ----- Bat (better cat) -----
+export BAT_THEME=tokyonight_night
+
+# thefuck alias (Autocrrect mistyped commands)
+eval $(thefuck --alias)
+eval $(thefuck --alias fk)
+
+# Plugins / Themes / Imports --------------------------------------------------------------------------------------- {{{
+
+source ~/fzf-git.sh/fzf-git.sh
+
+# }}}
+
+# History setup ---------------------------------------------------------------------------------------------------- {{{
+
 HISTFILE=$HOME/.zhistory
 SAVEHIST=10000
 HISTSIZE=9999
@@ -10,18 +39,12 @@ setopt hist_verify
 bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
 
+# }}}
 
-# ---- lsd (better ls) ----
-alias ls="lsd --color=always --long --git --icon=always"
-
-# ---- Zoxide (better cd) ----
-eval "$(zoxide init zsh)"
-
-# ---- FZF -----
+# FZF -------------------------------------------------------------------------------------------------------------- {{{
 
 # Set up fzf key bindings and fuzzy completion
 eval "$(fzf --zsh)"
-alias cd="z"
 
 # -- Use fd instead of fzf --
 
@@ -82,15 +105,9 @@ _fzf_comprun() {
   esac
 }
 
-# ----- Bat (better cat) -----
-export BAT_THEME=tokyonight_night
+# }}}
 
-source ~/fzf-git.sh/fzf-git.sh
-
-
-# Prompt
-#export PS1='[%*] [%n@%m]%~%#'
-#PROMPT="[%*] %n@%m %~%# "
+# Prompt ----------------------------------------------------------------------------------------------------------- {{{
 
 #version control in prompt
 autoload -Uz vcs_info
@@ -99,16 +116,9 @@ zstyle ':vcs_info:git:*' formats '%b '
 
 setopt PROMPT_SUBST
 PROMPT='%F{green}%*%f %F{blue}%~%f %F{red}${vcs_info_msg_0_}%f$ '
-# End of Prompt
 
+# }}}
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# thefuck alias (Autocrrect mistyped commands)
-eval $(thefuck --alias)
-eval $(thefuck --alias fk)
-
-
-
