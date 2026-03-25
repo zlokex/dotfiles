@@ -43,7 +43,13 @@ cyan="#2CF9ED"
 
 export FZF_DEFAULT_OPTS="--color=fg:${fg},bg:${bg},hl:${purple},fg+:${fg},bg+:${bg_highlight},hl+:${purple},info:${blue},prompt:${cyan},pointer:${cyan},marker:${cyan},spinner:${cyan},header:${cyan}"
 
-show_file_or_dir_preview="if [ -d {} ]; then lsd --tree --color=always {} | head -200; else bat -n --color=always --line-range :500 {}; fi"
+show_file_or_dir_preview="if [ -d {} ]; then
+    lsd --tree --color=always {} | head -200
+elif file -b --mime-type {} | grep -q ^image/; then
+    chafa --fit-width --size=\${FZF_PREVIEW_COLUMNS}x\${FZF_PREVIEW_LINES} {}
+else
+    bat -n --color=always --line-range :500 {}
+fi"
 
 export FZF_CTRL_T_OPTS="--preview '$show_file_or_dir_preview'"
 export FZF_ALT_C_OPTS="--preview 'lsd --tree --color=always {} | head -200'"
