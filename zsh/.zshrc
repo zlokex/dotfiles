@@ -17,10 +17,10 @@ fi
 
 # }}}
 
-# ---- lsd (better ls) ----
+# ----- lsd (better ls) -----
 alias ls="lsd --color=always --long --git --icon=always"
 
-# ---- Zoxide (better cd) ----
+# ----- Zoxide (better cd) -----
 eval "$(zoxide init zsh)"
 alias cd="z"
 
@@ -31,10 +31,15 @@ export BAT_THEME=tokyonight_night
 eval $(thefuck --alias)
 eval $(thefuck --alias fk)
 
+# ----- Zsh autosuggestions -----
+# Change autosuggestions to blue
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=blue'
+
 # Plugins / Themes / Imports --------------------------------------------------------------------------------------- {{{
 
 source ~/fzf-git.sh/fzf-git.sh
-source ~/powerlevel10k/powerlevel10k.zsh-theme
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/.zsh/powerlevel10k/powerlevel10k.zsh-theme
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

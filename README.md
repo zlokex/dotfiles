@@ -86,10 +86,16 @@ sudo dnf install bat
 ### Powerlevel10k (Zsh theme)
 
 ```bash
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.zsh/powerlevel10k
 ```
 
 To reconfigure p10k run `p10k configure`
+
+### Zsh Autosuggestions
+
+```bash
+git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
+```
 
 ### thefuck (Autocorrect mistyped commands)
 
