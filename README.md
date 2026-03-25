@@ -170,7 +170,18 @@ fc-cache -fv
 # Verify installation
 c-list | grep "Meslo"
 ```
-## Setup
+# Terminal (WezTerm)
+
+## Install
+
+**Fedora**
+
+```bash
+# Enable the Copr Repository (Official Nightly) (At your own risk)
+sudo dnf copr enable wezfurlong/wezterm-nightly
+# Install wezterm
+sudo dnf install wezterm
+```
 
 # Vimx
 
