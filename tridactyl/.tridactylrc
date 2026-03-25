@@ -1,0 +1,39 @@
+"  _____    _    _         _        _
+" |_   _| _(_)__| |__ _ __| |_ _  _| |
+"   | || '_| / _` / _` / _|  _| || | |
+"   |_||_| |_\__,_\__,_\__|\__|\_, |_|
+"                              |__/
+
+" General Settings
+set update.lastchecktime 1773792071779
+set update.nag true
+set update.nagwait 7
+set update.lastnaggedversion 1.14.0
+set update.checkintervalsecs 86400
+set configversion 2.0
+
+" For syntax highlighting see https://github.com/tridactyl/vim-tridactyl
+" vim: set filetype=tridactyl
+
+" Personal Settings
+
+" Smooth scrolling
+set smoothscroll true
+
+" Hint mode similar to Vimium
+bind f hint -J
+colours vimium " Css theme
+hintstylesnohighlights
+
+" BINDINGS -------------------------------------------------------------------------------------------------------- {{{
+
+" Allow Ctrl-f to start a search
+unbind <C-f>
+
+" Allow Ctrl-D to bookmark with tags
+unbind <C-d>
+
+" Comment toggler for Reddit, Hacker News and Lobste.rs
+bind ;c hint -Jc [class*="expand"],[class="togg"],[class="comment_folder"]
+
+" }}}
