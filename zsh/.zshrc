@@ -33,13 +33,14 @@ eval $(thefuck --alias fk)
 
 # ----- Zsh autosuggestions -----
 # Change autosuggestions to blue
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=blue'
+# ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=blue'
 
 # Plugins / Themes / Imports --------------------------------------------------------------------------------------- {{{
 
-source ~/fzf-git.sh/fzf-git.sh
-source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-source ~/.zsh/powerlevel10k/powerlevel10k.zsh-theme
+source ~/.zsh/plugins/fzf-git.sh/fzf-git.sh
+source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/.zsh/plugins/F-Sy-H/F-Sy-H.plugin.zsh
+source ~/.zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

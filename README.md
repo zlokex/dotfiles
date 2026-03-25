@@ -72,7 +72,7 @@ sudo dnf install fd-find
 ### fzf-git
 
 ```bash
-git clone https://github.com/junegunn/fzf-git.sh.git ~/fzf-git.sh/
+git clone https://github.com/junegunn/fzf-git.sh.git ~/.zsh/plugins/fzf-git.sh/
 ```
 
 ### bat (Better cat)
@@ -86,7 +86,7 @@ sudo dnf install bat
 ### Powerlevel10k (Zsh theme)
 
 ```bash
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.zsh/powerlevel10k
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.zsh/plugins/powerlevel10k
 ```
 
 To reconfigure p10k run `p10k configure`
@@ -94,7 +94,13 @@ To reconfigure p10k run `p10k configure`
 ### Zsh Autosuggestions
 
 ```bash
-git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
+git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/plugins/zsh-autosuggestions
+```
+
+### Fast syntax highlighting
+
+```bash
+git clone --depth=1 https://github.com/z-shell/F-Sy-H ~/.zsh/plugins/F-Sy-H
 ```
 
 ### thefuck (Autocorrect mistyped commands)
