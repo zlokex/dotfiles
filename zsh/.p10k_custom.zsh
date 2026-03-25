@@ -1,0 +1,1 @@
+# Custom settings that override p10k.zsh goes here since p10k.zsh is generated with p10k configure

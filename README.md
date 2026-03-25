@@ -83,6 +83,14 @@ git clone https://github.com/junegunn/fzf-git.sh.git ~/fzf-git.sh/
 sudo dnf install bat
 ```
 
+### Powerlevel10k (Zsh theme)
+
+```bash
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+```
+
+To reconfigure p10k run `p10k configure`
+
 ### thefuck (Autocorrect mistyped commands)
 
 **Fedora**
