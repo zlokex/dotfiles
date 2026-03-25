@@ -30,6 +30,9 @@ set number                      " set lines numbers
 set relativenumber              " make numbers relative
 set cursorline                  " highlight a line under the cursor
 
+""" NERDTree
+let NERDTreeShowHidden=1
+
 " VIMCRIPT ------------------------------------------------------------------- {{{
 
 " When started as "evim", evim.vim will already have done these settings, bail
@@ -105,6 +108,6 @@ call plug#end()
 " Open NERDTree when entering vim
 " autocmd VimEnter * NERDTree | wincmd p
 " Ctrl+N to toggle NERDTree
-map <C-n> :NERDTreeToggle<CR>
+map <C-n> :NERDTreeToggle %<CR>
 
 " }}}
