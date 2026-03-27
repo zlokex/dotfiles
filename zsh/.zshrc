@@ -11,7 +11,7 @@
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+if [[ $TERM == "xterm-kitty" ]] && [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
@@ -40,13 +40,19 @@ eval $(thefuck --alias fk)
 source ~/.zsh/plugins/fzf-git.sh/fzf-git.sh
 source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/.zsh/plugins/F-Sy-H/F-Sy-H.plugin.zsh
-source ~/.zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+if [[ $TERM == "xterm-kitty" ]]; then
+  source ~/.zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme
 
-# Source custom p10k configurations
-[[ ! -f ~/.p10k_custom.zsh ]] || source ~/.p10k_custom.zsh
+  # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+  [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+  # Source custom p10k configurations
+  [[ ! -f ~/.zsh/.p10k_custom.zsh ]] || source ~/.zsh/.p10k_custom.zsh
+else
+  # Fallback prompt
+  source ~/.zsh/custom-prompt.zsh
+fi
 
 # }}}
 
@@ -128,18 +134,6 @@ _fzf_comprun() {
     *)            fzf --preview "$show_file_or_dir_preview" "$@" ;;
   esac
 }
-
-# }}}
-
-# Prompt ----------------------------------------------------------------------------------------------------------- {{{
-
-#version control in prompt
-autoload -Uz vcs_info
-precmd() { vcs_info }
-zstyle ':vcs_info:git:*' formats '%b '
-
-setopt PROMPT_SUBST
-PROMPT='%F{green}%*%f %F{blue}%~%f %F{red}${vcs_info_msg_0_}%f$ '
 
 # }}}
 
