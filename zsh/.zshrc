@@ -150,6 +150,9 @@ _fzf_comprun() {
 autoload -U +X compinit && compinit
 source <(kubectl completion zsh)
 
+# Set KUBECONFIG to use kubeconfig in current directory (via relative path)
+export KUBECONFIG=./kubeconfig
+
 # }}}
 
 export NVM_DIR="$HOME/.nvm"
