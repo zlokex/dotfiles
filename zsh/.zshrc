@@ -17,6 +17,8 @@ fi
 
 # }}}
 
+# Aliases ---------------------------------------------------------------------------------------------------------- {{{
+
 # ----- lsd (better ls) -----
 alias ls="lsd --color=always --long --git --icon=always"
 
@@ -24,12 +26,17 @@ alias ls="lsd --color=always --long --git --icon=always"
 eval "$(zoxide init zsh)"
 alias cd="z"
 
-# ----- Bat (better cat) -----
-export BAT_THEME=tokyonight_night
+alias k=kubectl
 
 # thefuck alias (Autocrrect mistyped commands)
 eval $(thefuck --alias)
 eval $(thefuck --alias fk)
+
+# }}}
+
+# ----- Bat (better cat) -----
+export BAT_THEME=tokyonight_night
+
 
 # ----- Zsh autosuggestions -----
 # Change autosuggestions to blue
@@ -134,6 +141,14 @@ _fzf_comprun() {
     *)            fzf --preview "$show_file_or_dir_preview" "$@" ;;
   esac
 }
+
+# }}}
+
+# Kubectl ---------------------------------------------------------------------------------------------------------- {{{
+
+# Add kubectl autocompletion
+autoload -U +X compinit && compinit
+source <(kubectl completion zsh)
 
 # }}}
 
