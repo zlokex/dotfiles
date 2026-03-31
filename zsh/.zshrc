@@ -17,23 +17,6 @@ fi
 
 # }}}
 
-# Aliases ---------------------------------------------------------------------------------------------------------- {{{
-
-# ----- lsd (better ls) -----
-alias ls="lsd --color=always --long --git --icon=always"
-
-# ----- Zoxide (better cd) -----
-eval "$(zoxide init zsh)"
-alias cd="z"
-
-alias k=kubectl
-
-# thefuck alias (Autocrrect mistyped commands)
-eval $(thefuck --alias)
-eval $(thefuck --alias fk)
-
-# }}}
-
 # ----- Bat (better cat) -----
 export BAT_THEME=tokyonight_night
 
@@ -164,3 +147,28 @@ export NVM_DIR="$HOME/.nvm"
 export PATH="$HOME/.cargo/bin:$PATH"
 
 # }}}
+
+# Aliases ---------------------------------------------------------------------------------------------------------- {{{
+
+# ----- lsd (better ls) -----
+alias ls="lsd --color=always --long --git --icon=always"
+
+# ----- Zoxide (better cd) ----
+alias cd="z"
+
+alias k=kubectl
+
+# thefuck alias (Autocrrect mistyped commands)
+eval $(thefuck --alias)
+eval $(thefuck --alias fk)
+
+if [[ $TERM == "xterm-kitty" ]]; then
+    # For SSH compatibility
+    # alias ssh="kitten ssh"
+    alias ssh="TERM=xterm-256color command ssh"
+fi
+
+# }}}
+
+# Keep near end of file (needs to be after compinit)
+eval "$(zoxide init zsh)"
