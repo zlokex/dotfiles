@@ -30,6 +30,7 @@ export BAT_THEME=tokyonight_night
 source ~/.zsh/plugins/fzf-git.sh/fzf-git.sh
 source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/.zsh/plugins/F-Sy-H/F-Sy-H.plugin.zsh
+fpath=($HOME/.zsh/plugins/zsh-completions/src $fpath)
 
 if [[ $TERM == "xterm-kitty" ]]; then
   source ~/.zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme
