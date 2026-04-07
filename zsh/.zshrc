@@ -61,6 +61,21 @@ bindkey '^[[B' history-search-forward
 
 # }}}
 
+# Autocompletion --------------------------------------------------------------------------------------------------- {{{
+
+autoload -Uz +X compinit && compinit
+
+# Enable the interactive selection menu
+zstyle ':completion:*' menu select
+
+zmodload zsh/complist # Provides menuselect keymap
+# Vim keybindings for the selection menu
+bindkey -M menuselect 'h' vi-backward-char
+bindkey -M menuselect 'k' vi-up-line-or-history
+bindkey -M menuselect 'l' vi-forward-char
+bindkey -M menuselect 'j' vi-down-line-or-history
+# }}}
+
 # FZF -------------------------------------------------------------------------------------------------------------- {{{
 
 # Set up fzf key bindings and fuzzy completion
@@ -130,7 +145,6 @@ _fzf_comprun() {
 # Kubectl ---------------------------------------------------------------------------------------------------------- {{{
 
 # Add kubectl autocompletion
-autoload -U +X compinit && compinit
 source <(kubectl completion zsh)
 
 # Set KUBECONFIG to use kubeconfig in current directory (via relative path)
