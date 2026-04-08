@@ -20,20 +20,27 @@ fi
 # ----- Bat (better cat) -----
 export BAT_THEME=tokyonight_night
 
-
 # ----- Zsh autosuggestions -----
 # Change autosuggestions to blue
 # ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=blue'
 
 # Plugins / Themes / Imports --------------------------------------------------------------------------------------- {{{
 
-source ~/.zsh/plugins/fzf-git.sh/fzf-git.sh
-source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-source ~/.zsh/plugins/F-Sy-H/F-Sy-H.plugin.zsh
-fpath=($HOME/.zsh/plugins/zsh-completions/src $fpath)
+# Set the directory we want to store zinit and plugins
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+
+# Download Zinit, if it's not there yet
+if [ ! -d "$ZINIT_HOME" ]; then
+   mkdir -p "$(dirname $ZINIT_HOME)"
+   git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+fi
+
+# Source/Load zinit
+source "${ZINIT_HOME}/zinit.zsh"
 
 if [[ $TERM == "xterm-kitty" ]]; then
-  source ~/.zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme
+  # Add in Powerlevel10k
+  zinit ice depth=1; zinit light romkatv/powerlevel10k
 
   # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
   [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -44,6 +51,34 @@ else
   # Fallback prompt
   source ~/.zsh/custom-prompt.zsh
 fi
+
+# Add in zsh plugins
+zinit light zsh-users/zsh-syntax-highlighting
+zinit light zsh-users/zsh-completions
+zinit light zsh-users/zsh-autosuggestions
+
+zinit light Aloxaf/fzf-tab
+setopt GLOB_DOTS # Include hidden files in globbing (for fzf-tab)
+
+zinit light z-shell/F-Sy-H # Syntax highlightning
+
+zinit light junegunn/fzf-git.sh #(Ctrl-G ? to show available bindings)
+# Unbind ^G from send-break so it works as a prefix key for fzf-git
+bindkey -rM emacs '^G'
+bindkey -rM viins '^G'
+bindkey -rM vicmd '^G'
+
+# Add in snippets
+zinit snippet OMZL::git.zsh # Load the Git library from Oh My Zsh (https://github.com/ohmyzsh/ohmyzsh)
+zinit snippet OMZP::sudo # Double press Esc to prepend command with sudo (https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/sudo)
+zinit snippet OMZP::azure # Adds Azure CLI autocompletion and aliases (https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/azure)
+zinit snippet OMZP::kubectl # Adds kubectl autocompletion and aliases (https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/kubectl
+zinit snippet OMZP::command-not-found # Suggest installation of missing commands (https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/command-not-found
+
+# Load completions
+autoload -Uz compinit && compinit
+
+zinit cdreplay -q # Replay compdefs (to be done after compinit). -q – quiet.
 
 # }}}
 
@@ -64,17 +99,17 @@ bindkey '^[[B' history-search-forward
 
 # Autocompletion --------------------------------------------------------------------------------------------------- {{{
 
-autoload -Uz +X compinit && compinit
+# autoload -Uz +X compinit && compinit
 
-# Enable the interactive selection menu
-zstyle ':completion:*' menu select
+# Completion styling
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' menu no
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
+zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 
-zmodload zsh/complist # Provides menuselect keymap
-# Vim keybindings for the selection menu
-bindkey -M menuselect 'h' vi-backward-char
-bindkey -M menuselect 'k' vi-up-line-or-history
-bindkey -M menuselect 'l' vi-forward-char
-bindkey -M menuselect 'j' vi-down-line-or-history
+source <(docker completion zsh)
+
 # }}}
 
 # FZF -------------------------------------------------------------------------------------------------------------- {{{
@@ -144,9 +179,6 @@ _fzf_comprun() {
 # }}}
 
 # Kubectl ---------------------------------------------------------------------------------------------------------- {{{
-
-# Add kubectl autocompletion
-source <(kubectl completion zsh)
 
 # Set KUBECONFIG to use kubeconfig in current directory (via relative path)
 export KUBECONFIG=./kubeconfig
