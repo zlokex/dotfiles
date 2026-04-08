@@ -206,14 +206,50 @@ tar -xzf jetbrains-toolbox-*.tar.gz
 
 ## Dependencies
 
-### IdeaVim (Plugin)
+### IdeaVim Plugin
 
-1. Open Setings with Ctrl+Alt+S
-2. Navigate to the **Plugins** section
-3. Switch to the **Marketplace** tab.
-4. Use the search bar to search for IdeaVim
-5. Click **Install**
+https://plugins.jetbrains.com/plugin/164-ideavim
 
-TODO: Add plugin folder to repo?
+```bash
+idea installPlugins IdeaVim
+```
 
+### IdeaVim-Quickscope Plugin
 
+https://plugins.jetbrains.com/plugin/19417-ideavim-quickscope
+
+```bash
+idea installPlugins com.joshestein.ideavim-quickscope
+```
+
+### Vim AnyObject Plugin
+
+https://plugins.jetbrains.com/plugin/28333-vim-anyobject
+
+```bash
+idea installPlugins com.magidc.ideavim.anyObject
+```
+
+### Vim CmdFloat Plugin
+
+https://plugins.jetbrains.com/plugin/28732-vim-cmdfloat
+
+```bash
+idea installPlugins com.yelog.ideavim.cmdfloat
+```
+
+### Vim Peekaboo Plugin
+
+https://plugins.jetbrains.com/plugin/25776-vim-peekaboo
+
+```bash
+idea installPlugins com.julienphalip.ideavim.peekaboo
+```
+
+### Wrap to Column Plugin
+
+https://plugins.jetbrains.com/plugin/7234-wrap-to-column
+
+```bash
+idea installPlugins com.andrewbrookins.wrap_to_column
+```
