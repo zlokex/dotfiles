@@ -60,7 +60,7 @@ zinit light zsh-users/zsh-autosuggestions
 zinit light Aloxaf/fzf-tab
 setopt GLOB_DOTS # Include hidden files in globbing (for fzf-tab)
 
-zinit light z-shell/F-Sy-H # Syntax highlightning
+zinit light z-shell/F-Sy-H # Syntax highlighting
 
 zinit light junegunn/fzf-git.sh #(Ctrl-G ? to show available bindings)
 # Unbind ^G from send-break so it works as a prefix key for fzf-git
