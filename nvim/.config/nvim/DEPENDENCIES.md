@@ -27,3 +27,14 @@ If you don't need image preview in neo-tree, you can skip installing luarocks by
     rocks = { enabled = false },
   })
   ```
+
+## GitHub Copilot
+
+Requires an active [GitHub Copilot](https://github.com/settings/copilot) subscription.
+
+### Authorize
+
+1. Open Neovim and run `:Copilot auth`
+2. Copy the one-time code shown and open the GitHub device URL in your browser
+3. Paste the code and authorize the plugin
+4. Verify with `:Copilot status` — should show `Ready`

@@ -66,6 +66,7 @@ return { -- Autocompletion
       Event = '',
       Operator = '󰆕',
       TypeParameter = '󰊄',
+      Copilot = '',
     }
     cmp.setup {
       snippet = {
@@ -92,7 +93,7 @@ return { -- Autocompletion
         -- Accept ([y]es) the completion.
         --  This will auto-import if your LSP supports it.
         --  This will expand snippets if the LSP sent a snippet.
-        ['<C-y>'] = cmp.mapping.confirm { select = true },
+        ['<C-Enter>'] = cmp.mapping.confirm { select = true },
 
         -- If you prefer more traditional completion keymaps,
         -- you can uncomment the following lines
@@ -152,6 +153,7 @@ return { -- Autocompletion
           -- set group index to 0 to skip loading LuaLS completions as lazydev recommends it
           group_index = 0,
         },
+        { name = 'copilot' },
         { name = 'nvim_lsp' },
         { name = 'luasnip' },
         { name = 'buffer' },
@@ -166,6 +168,7 @@ return { -- Autocompletion
             luasnip = '[Snippet]',
             buffer = '[Buffer]',
             path = '[Path]',
+            copilot = '[Copilot]',
           })[entry.source.name]
           return vim_item
         end,
