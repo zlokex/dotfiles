@@ -32,6 +32,7 @@ require('lazy').setup({
   require 'plugins.toggleterm',
   require 'plugins.copilot',
   require 'plugins.claudecode',
+  require 'plugins.blame',
 }, {
   rocks = { hererocks = true }, -- Bootstrap local Lua 5.1 for plugins that need luarocks (e.g. image.nvim)
 })
