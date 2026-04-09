@@ -8,8 +8,11 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 -- For conciseness
 local opts = { noremap = true, silent = true }
 
---
+-- Exit insert mode
 vim.keymap.set('i', 'jk', '<Esc>', { desc = 'Exit insert mode' })
+
+-- Esc to normal mode in terminal
+vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], opts)
 
 -- save file
 vim.keymap.set('n', '<C-s>', '<cmd> w <CR>', opts)
