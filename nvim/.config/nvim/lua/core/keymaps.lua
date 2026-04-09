@@ -11,8 +11,8 @@ local opts = { noremap = true, silent = true }
 -- Exit insert mode
 vim.keymap.set('i', 'jk', '<Esc>', { desc = 'Exit insert mode' })
 
--- Esc to normal mode in terminal
-vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], opts)
+-- Exit terminal mode
+vim.keymap.set('t', 'jk', [[<C-\><C-n>]], { desc = 'Exit terminal mode' })
 
 -- save file
 vim.keymap.set('n', '<C-s>', '<cmd> w <CR>', opts)
