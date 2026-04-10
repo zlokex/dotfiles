@@ -32,7 +32,7 @@ require('lazy').setup({
   require 'plugins.toggleterm',
   require 'plugins.copilot',
   require 'plugins.claudecode',
-  require 'plugins.blame',
+  require 'plugins.fugitive',
   require 'plugins.treesitter-textobjects',
   require 'plugins.tmux-navigator',
   require 'plugins.which-key',

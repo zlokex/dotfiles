@@ -13,10 +13,12 @@ return { -- Useful plugin to show you pending keybinds.
     spec = {
       { '<leader>s', group = '[S]earch', mode = { 'n', 'v' } },
       { '<leader>t', group = '[T]oggle' },
-      { '<leader>h', group = 'Split window horizontally' },
-      { '<leader>v', group = 'Split window vertically' },
-      { '<leader>a', group = 'Claude code' },
-      { 'gr', group = 'LSP Actions', mode = { 'n' } },
+      { '<leader>H', group = 'Split window [H]orizontally' },
+      { '<leader>V', group = 'Split window [V]ertically' },
+      { '<leader>a', group = '[A]I - Claude code', icon = { icon = '󱚦', color = 'orange' } },
+      { '<leader>g', group = '[G]it', icon = { icon = '', color = 'orange' } },
+      { '<leader>gc', group = 'Git [C]ommit' },
+      { '<leader>h', group = 'Git [H]unk' },
     },
   },
 }
