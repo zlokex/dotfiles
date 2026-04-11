@@ -3,11 +3,7 @@ return {
   dependencies = {
     'nvim-tree/nvim-web-devicons',
     'ahmedkhalf/project.nvim',
-    {
-      'folke/persistence.nvim',
-      event = 'BufReadPre',
-      opts = {},
-    },
+    'folke/persistence.nvim',
   },
 
   config = function()
