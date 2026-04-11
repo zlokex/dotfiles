@@ -229,6 +229,7 @@ return {
             ['<bs>'] = 'navigate_up',
             ['.'] = 'set_root',
             ['H'] = 'toggle_hidden',
+            ['L'] = 'open_nofocus',
             ['/'] = 'fuzzy_finder',
             ['D'] = 'fuzzy_finder_directory',
             ['#'] = 'fuzzy_sorter', -- fuzzy sorting using the fzy algorithm
@@ -254,7 +255,14 @@ return {
           },
         },
 
-        commands = {}, -- Add a custom command or override a global one using the same function name
+        commands = {
+          open_nofocus = function(state)
+            require('neo-tree.sources.filesystem.commands').open(state)
+            vim.schedule(function()
+              vim.cmd [[Neotree focus]]
+            end)
+          end,
+        }, -- Add a custom command or override a global one using the same function name
       },
       buffers = {
         follow_current_file = {
