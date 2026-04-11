@@ -36,6 +36,7 @@ require('lazy').setup({
   require 'plugins.treesitter-textobjects',
   require 'plugins.tmux-navigator',
   require 'plugins.which-key',
+  require 'plugins.project',
 }, {
   rocks = { hererocks = true }, -- Bootstrap local Lua 5.1 for plugins that need luarocks (e.g. image.nvim)
 })
