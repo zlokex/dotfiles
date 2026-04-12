@@ -40,6 +40,23 @@ return {
         maximum_padding = 5,
         maximum_length = 15,
         sort_by = 'insert_at_end',
+        custom_filter = function(buf_number)
+          local buf_name = vim.api.nvim_buf_get_name(buf_number)
+          local ft = vim.bo[buf_number].filetype
+
+          -- 1. Hide if the filetype is explicitly "neo-tree"
+          if ft == 'neo-tree' then
+            return false
+          end
+
+          -- 2. Hide if the name contains "neo-tree" (handles filesystem/git/buffers)
+          if buf_name:find('neo-tree', 1, true) then
+            return false
+          end
+
+          -- 3. Show everything else
+          return true
+        end,
       },
       highlights = {
         separator = {

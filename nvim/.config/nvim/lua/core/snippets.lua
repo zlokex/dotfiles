@@ -42,3 +42,11 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = highlight_group,
   pattern = '*',
 })
+
+-- Close Neo-tree if it's open before the session is written to disk
+vim.api.nvim_create_autocmd('User', {
+  pattern = 'PersistenceSavePre',
+  callback = function()
+    vim.cmd 'Neotree close'
+  end,
+})
