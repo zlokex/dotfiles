@@ -1,37 +1,35 @@
 # Dotfiles
 
-**WARNING**: These are the installation instructions for myself, not for you. 
-You should have your own repository and get inspired by this one. 
+**WARNING**: These are the installation instructions for myself, not for you.
+You should have your own repository and get inspired by this one.
 If you have any questions, feel free to open issues.
 
 ## Dependecies
 
 ### Stow (Optional)
 
-**Fedora**
-
 ```bash
+# Fedora
 sudo dnf install stow
 ```
 
 ## Setup
 
-Clone the repository and run stow */ to generate symlinks in the correct folders.
+Clone the repository and run stow \*/ to generate symlinks in the correct folders.
 
 ```bash
+# Fedora
 git clone this-repo
 cd repo
 stow */
 ```
 
-
 # Shell (Zsh)
 
 ## Install
 
-**Fedora**
-
 ```bash
+# Fedora
 sudo dnf install zsh
 ```
 
@@ -39,49 +37,43 @@ sudo dnf install zsh
 
 ### lsd (Better ls)
 
-**Fedora**
-
-```bash 
+```bash
+# Fedora
 sudo dnf install lsd
 ```
 
 ### Zoxide (Better cd)
 
-**Fedora**
-
 ```bash
+# Fedora
 sudo dnf install zoxide
 ```
 
 ### fzf (Fuzzy finder)
 
-**Fedora**
-
 ```bash
+# Fedora
 sudo dnf install fzf
 ```
 
 ### fd (find alternative)
 
-**Fedora**
-
 ```bash
+# Fedora
 sudo dnf install fd-find
 ```
 
 ### bat (Better cat)
 
-**Fedora**
-
 ```bash
+# Fedora
 sudo dnf install bat
 ```
 
 ### thefuck (Autocorrect mistyped commands)
 
-**Fedora**
-
 ```bash
+# Fedora
 sudo dnf install thefuck
 ```
 
@@ -92,6 +84,7 @@ sudo dnf install thefuck
 ## Install
 
 ```bash
+# Fedora
 sudo dnf install git
 ```
 
@@ -99,9 +92,8 @@ sudo dnf install git
 
 ### Delta
 
-**Fedora**
-
 ```bash
+# Fedora
 sudo dnf install git-delta
 ```
 
@@ -111,14 +103,12 @@ Config file is under dotfiles/alacritty/.config/alacritty/alacritty.toml
 
 ## Install
 
-**Fedora**
-
 ```bash
+# Fedora
 # Enable copr repository (Use at your own risk)
 sudo dnf copr enable pschyska/alacritty
 sudo dnf install alacritty
 ```
-
 
 ## Dependencies
 
@@ -134,6 +124,7 @@ cd ~/nerd-fonts
 # Spare checkout only the Meslo fonts
 git sparse-checkout add patched-fonts/Meslo
 ```
+
 ### Install the Font
 
 ```bash
@@ -144,13 +135,13 @@ fc-cache -fv
 # Verify installation
 c-list | grep "Meslo"
 ```
+
 # Terminal (WezTerm)
 
 ## Install
 
-**Fedora**
-
 ```bash
+# Fedora
 # Enable the Copr Repository (Official Nightly) (At your own risk)
 sudo dnf copr enable wezfurlong/wezterm-nightly
 # Install wezterm
@@ -163,15 +154,13 @@ Vim with clipboard support
 
 ## Install
 
-**Fedora**
-
 ```bash
+# Fedora
 sudo dnf install vim-X11
 ```
 
-**Fedora**
-
 ```bash
+# Fedora
 sudo dnf install vim-X11
 ```
 
@@ -202,6 +191,7 @@ tar -xzf jetbrains-toolbox-*.tar.gz
 # Run the application (This will launch the application and integrate it in ~/.local/share/JetBrains/Toolbox
 ./jetbrains-toolbox-*/jetbrains-toolbox
 ```
+
 3. Install your IDE of choice (e.g. IntelliJ IDEA) from the Toolbox
 
 ## Dependencies
