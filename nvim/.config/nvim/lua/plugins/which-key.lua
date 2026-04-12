@@ -19,6 +19,7 @@ return { -- Useful plugin to show you pending keybinds.
       { '<leader>g', group = '[G]it', icon = { icon = '', color = 'orange' } },
       { '<leader>gc', group = 'Git [C]ommit' },
       { '<leader>h', group = 'Git [H]unk' },
+      { '<leader>q', group = 'Session / Persistence' },
     },
   },
 }
