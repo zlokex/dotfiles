@@ -22,4 +22,7 @@ _darcs
 ^/LICENSE.*
 ^/COPYING
 
-\.idea
+# Matches anywhere in the directory tree
+\.idea(/|$)
+\.cachebro(/|$)
+\.claude(/|$)
