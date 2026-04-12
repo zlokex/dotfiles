@@ -22,7 +22,7 @@ export BAT_THEME=tokyonight_night
 
 # ----- Zsh autosuggestions -----
 # Change autosuggestions to blue
-# ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=blue'
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=12,bold'
 
 # Plugins / Themes / Imports --------------------------------------------------------------------------------------- {{{
 
@@ -52,13 +52,17 @@ else
   source ~/.zsh/custom-prompt.zsh
 fi
 
+# Load completions
+autoload -Uz compinit && compinit
+
+#  (See: https://github.com/aloxaf/fzf-tab?tab=readme-ov-file#install for instructions on where to place)
+zinit light Aloxaf/fzf-tab
+setopt GLOB_DOTS # Include hidden files in globbing (for fzf-tab)
+
 # Add in zsh plugins
 zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
-
-zinit light Aloxaf/fzf-tab
-setopt GLOB_DOTS # Include hidden files in globbing (for fzf-tab)
 
 zinit light z-shell/F-Sy-H # Syntax highlighting
 
@@ -74,9 +78,6 @@ zinit snippet OMZP::sudo # Double press Esc to prepend command with sudo (https:
 zinit snippet OMZP::azure # Adds Azure CLI autocompletion and aliases (https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/azure)
 zinit snippet OMZP::kubectl # Adds kubectl autocompletion and aliases (https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/kubectl
 zinit snippet OMZP::command-not-found # Suggest installation of missing commands (https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/command-not-found
-
-# Load completions
-autoload -Uz compinit && compinit
 
 zinit cdreplay -q # Replay compdefs (to be done after compinit). -q – quiet.
 
