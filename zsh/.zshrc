@@ -199,6 +199,14 @@ export PATH=$PATH:$(go env GOPATH)/bin
 
 # }}}
 
+# Environment Variables -------------------------------------------------------------------------------------------- {{{
+
+# Set Default editor to nvim
+export EDITOR="nvim"
+export VISUAL="nvim"
+
+# }}}
+
 # Aliases ---------------------------------------------------------------------------------------------------------- {{{
 
 # ----- lsd (better ls) -----
