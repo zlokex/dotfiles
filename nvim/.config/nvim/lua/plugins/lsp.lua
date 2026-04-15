@@ -105,6 +105,17 @@ return {
           })
         end
 
+        -- azure-pipelines-language-server sends a non-standard
+        -- custom/schema/request that the client must answer with a schema URL,
+        -- or the server returns no completions. Registering it via
+        -- vim.lsp.config's `handlers` field didn't take effect, so attach it
+        -- directly to the client on LspAttach.
+        if client and client.name == 'azure_pipelines_ls' then
+          client.handlers['custom/schema/request'] = function(_, _)
+            return 'https://raw.githubusercontent.com/microsoft/azure-pipelines-vscode/main/service-schema.json'
+          end
+        end
+
         -- The following code creates a keymap to toggle inlay hints in your
         -- code, if the language server you are using supports them
         if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
@@ -156,6 +167,17 @@ return {
       terraformls = {},
       jsonls = {},
       yamlls = {},
+      azure_pipelines_ls = {
+        -- Only auto-attach for files that look like pipeline definitions.
+        -- Otherwise every .yml buffer starts this server, and its
+        -- yaml-language-server base crashes at init with a UriError.
+        -- Use :AzurePipelinesAttach for pipeline files with non-matching names.
+        root_dir = function(bufnr, on_dir)
+          local name = vim.api.nvim_buf_get_name(bufnr)
+          if not name:match('azure%-pipelines') then return end
+          on_dir(vim.fs.root(bufnr, { 'azure-pipelines.yml', '.git' }) or vim.fn.getcwd())
+        end,
+      },
       lua_ls = {
         settings = {
           Lua = {
@@ -196,5 +218,31 @@ return {
       vim.lsp.config(server, cfg)
       vim.lsp.enable(server)
     end
+
+    -- Force-attach Azure Pipelines LSP to the current buffer, bypassing the
+    -- default `azure-pipelines.yml` root-pattern check. Useful for pipeline
+    -- files with non-standard names or locations.
+    vim.api.nvim_create_user_command('AzurePipelinesAttach', function()
+      local bufname = vim.api.nvim_buf_get_name(0)
+      vim.lsp.start {
+        name = 'azure_pipelines_ls',
+        cmd = { 'azure-pipelines-language-server', '--stdio' },
+        capabilities = capabilities,
+        root_dir = (bufname ~= '' and vim.fs.dirname(bufname)) or vim.uv.cwd(),
+      }
+    end, { desc = 'Attach azure_pipelines_ls to current buffer' })
+
+    vim.keymap.set('n', '<leader>la', function()
+      local clients = vim.lsp.get_clients { bufnr = 0, name = 'azure_pipelines_ls' }
+      if #clients > 0 then
+        for _, c in ipairs(clients) do
+          vim.lsp.buf_detach_client(0, c.id)
+        end
+        vim.notify('azure_pipelines_ls detached from buffer', vim.log.levels.INFO)
+      else
+        vim.cmd 'AzurePipelinesAttach'
+        vim.notify('azure_pipelines_ls attached to buffer', vim.log.levels.INFO)
+      end
+    end, { desc = '[L]SP: toggle [A]zure Pipelines for buffer' })
   end,
 }
