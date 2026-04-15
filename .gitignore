@@ -1,4 +1,6 @@
 .idea/
 .cachebro/
 .claude/
+# vim persistent undo files
+*.un~
 
