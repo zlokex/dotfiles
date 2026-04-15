@@ -111,6 +111,12 @@ zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 
 source <(docker completion zsh)
 
+# Azure CLI completion (Fedora ships this with the `azure-cli` RPM)
+if [[ -f /usr/share/bash-completion/completions/azure-cli ]]; then
+  autoload -U +X bashcompinit && bashcompinit
+  source /usr/share/bash-completion/completions/azure-cli
+fi
+
 # }}}
 
 # FZF -------------------------------------------------------------------------------------------------------------- {{{
