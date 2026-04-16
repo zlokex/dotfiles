@@ -15,7 +15,8 @@
   ansible.builtin.shell: >-
     set -o pipefail;
     find . -maxdepth 1 -mindepth 1 -type d
-    ! -name '.git' ! -name '.idea' ! -name '.claude' ! -name '.cachebro' ! -name 'ansible'
+    ! -name '.git' ! -name '.idea' ! -name '.claude' ! -name '.cachebro'
+    ! -name 'ansible' ! -name 'terraform'
     -printf '%f\n'
   args:
     chdir: "{{ dotfiles_path }}"
