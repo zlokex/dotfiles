@@ -77,7 +77,6 @@ zinit snippet OMZL::git.zsh # Load the Git library from Oh My Zsh (https://githu
 zinit snippet OMZP::sudo # Double press Esc to prepend command with sudo (https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/sudo)
 zinit snippet OMZP::azure # Adds Azure CLI autocompletion and aliases (https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/azure)
 zinit snippet OMZP::kubectl # Adds kubectl autocompletion and aliases (https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/kubectl
-zinit snippet OMZP::command-not-found # Suggest installation of missing commands (https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/command-not-found
 
 zinit cdreplay -q # Replay compdefs (to be done after compinit). -q – quiet.
 
@@ -109,7 +108,7 @@ zstyle ':completion:*' menu no
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 
-source <(docker completion zsh)
+command -v docker >/dev/null 2>&1 && source <(docker completion zsh)
 
 # Azure CLI completion (Fedora ships this with the `azure-cli` RPM)
 if [[ -f /usr/share/bash-completion/completions/azure-cli ]]; then
@@ -122,7 +121,7 @@ fi
 # FZF -------------------------------------------------------------------------------------------------------------- {{{
 
 # Set up fzf key bindings and fuzzy completion
-eval "$(fzf --zsh)"
+command -v fzf >/dev/null 2>&1 && eval "$(fzf --zsh)"
 
 # -- Use fd instead of fzf --
 
@@ -224,8 +223,10 @@ alias cd="z"
 alias k=kubectl
 
 # thefuck alias (Autocrrect mistyped commands)
-eval $(thefuck --alias)
-eval $(thefuck --alias fk)
+if command -v thefuck >/dev/null 2>&1; then
+  eval "$(thefuck --alias)"
+  eval "$(thefuck --alias fk)"
+fi
 
 if [[ $TERM == "xterm-kitty" ]]; then
     # For SSH compatibility
@@ -236,4 +237,4 @@ fi
 # }}}
 
 # Keep near end of file (needs to be after compinit)
-eval "$(zoxide init zsh)"
+command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
