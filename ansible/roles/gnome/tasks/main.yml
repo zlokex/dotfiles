@@ -1,0 +1,46 @@
+---
+# Extensions are downloaded via `gext` (gnome-extensions-cli) and enabled by
+# writing the UUID list directly to dconf, which works without an active
+# GNOME Shell D-Bus session (so it's safe to run over SSH / before first
+# graphical login). Extensions activate on the next login.
+
+- name: Install Extensions GUI and Tweaks
+  become: true
+  ansible.builtin.dnf:
+    name:
+      - gnome-extensions-app
+      - gnome-tweaks
+    state: present
+
+- name: Check gnome-extensions CLI is available
+  ansible.builtin.command: which gnome-extensions
+  register: gext_cli
+  changed_when: false
+  failed_when: false
+
+- name: Install pipx
+  become: true
+  ansible.builtin.dnf:
+    name: pipx
+    state: present
+  when: gext_cli.rc == 0
+
+- name: Install gnome-extensions-cli via pipx
+  ansible.builtin.command: pipx install gnome-extensions-cli
+  args:
+    creates: "{{ ansible_user_dir }}/.local/bin/gext"
+  when: gext_cli.rc == 0
+
+- name: Install GNOME extensions via gext
+  ansible.builtin.command: "{{ ansible_user_dir }}/.local/bin/gext install {{ item }}"
+  loop: "{{ gnome_extension_uuids }}"
+  register: gext_install
+  changed_when: "'already installed' not in gext_install.stdout"
+  when: gext_cli.rc == 0
+
+- name: Enable GNOME extensions via dconf
+  community.general.dconf:
+    key: /org/gnome/shell/enabled-extensions
+    value: "{{ gnome_extension_uuids | to_json }}"
+    state: present
+  when: gext_cli.rc == 0

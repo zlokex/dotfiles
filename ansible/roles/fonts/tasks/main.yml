@@ -1,0 +1,34 @@
+---
+- name: Ensure user font directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.local/share/fonts"
+    state: directory
+    mode: "0755"
+
+- name: Sparse-clone nerd-fonts repo
+  ansible.builtin.command:
+    cmd: >-
+      git clone --filter=blob:none --sparse
+      https://github.com/ryanoasis/nerd-fonts.git
+      {{ ansible_user_dir }}/nerd-fonts
+    creates: "{{ ansible_user_dir }}/nerd-fonts/.git"
+
+- name: Add font families to sparse checkout
+  ansible.builtin.command:
+    cmd: git sparse-checkout add patched-fonts/{{ item }}
+    chdir: "{{ ansible_user_dir }}/nerd-fonts"
+    creates: "{{ ansible_user_dir }}/nerd-fonts/patched-fonts/{{ item }}"
+  loop: "{{ nerd_font_families }}"
+
+- name: Install nerd fonts
+  ansible.builtin.command:
+    cmd: ./install.sh {{ item }}
+    chdir: "{{ ansible_user_dir }}/nerd-fonts"
+    creates: "{{ ansible_user_dir }}/.local/share/fonts/NerdFonts/{{ item }}"
+  loop: "{{ nerd_font_families }}"
+  register: font_install
+
+- name: Refresh font cache
+  ansible.builtin.command: fc-cache -f
+  when: font_install.changed
+  changed_when: false

@@ -1,0 +1,24 @@
+---
+- name: Recreate workstation
+  hosts: local
+  gather_facts: true
+
+  pre_tasks:
+    - name: Confirm distro is Fedora
+      ansible.builtin.assert:
+        that: ansible_distribution == "Fedora"
+        fail_msg: "This playbook only targets Fedora (detected {{ ansible_distribution }})."
+
+  roles:
+    - { role: copr,         tags: [copr, packages] }
+    - { role: dnf_packages, tags: [dnf, packages] }
+    - { role: flatpak,      tags: [flatpak, packages] }
+    - { role: fonts,        tags: [fonts] }
+    - { role: dotfiles,     tags: [dotfiles] }
+    - { role: shell,        tags: [shell] }
+    - { role: nvm,          tags: [nvm, node] }
+    - { role: neovim,       tags: [neovim] }
+    - { role: vim,          tags: [vim] }
+    - { role: jetbrains,    tags: [jetbrains] }
+    - { role: gnome,        tags: [gnome] }
+    - { role: services,     tags: [services] }

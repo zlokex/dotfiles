@@ -1,0 +1,20 @@
+---
+# Neovim itself is installed via dnf_packages. lazy.nvim self-bootstraps
+# on first run, and Mason installs LSPs/formatters into ~/.local/share/nvim.
+# This role only ensures the compile toolchain Mason + treesitter need.
+- name: Ensure neovim build dependencies
+  become: true
+  ansible.builtin.dnf:
+    name:
+      - gcc
+      - gcc-c++
+      - make
+      - unzip
+      - cmake
+      - luarocks
+    state: present
+
+- name: Headless sync of lazy.nvim plugins
+  ansible.builtin.command: nvim --headless "+Lazy! sync" +qa
+  changed_when: false
+  failed_when: false

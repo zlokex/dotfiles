@@ -1,0 +1,105 @@
+---
+- name: Install CLI packages
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ dnf_packages_cli }}"
+    state: present
+  tags: [cli]
+
+- name: Add HashiCorp repo (terraform)
+  become: true
+  ansible.builtin.get_url:
+    url: https://rpm.releases.hashicorp.com/fedora/hashicorp.repo
+    dest: /etc/yum.repos.d/hashicorp.repo
+    mode: "0644"
+  tags: [dev]
+
+- name: Add Kubernetes repo (kubectl)
+  become: true
+  ansible.builtin.yum_repository:
+    name: kubernetes
+    description: Kubernetes
+    baseurl: "https://pkgs.k8s.io/core:/stable:/{{ kubernetes_minor }}/rpm/"
+    gpgkey: "https://pkgs.k8s.io/core:/stable:/{{ kubernetes_minor }}/rpm/repodata/repomd.xml.key"
+    gpgcheck: true
+    enabled: true
+  tags: [dev]
+
+- name: Install dev packages
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ dnf_packages_dev }}"
+    state: present
+  tags: [dev]
+
+- name: Add Docker CE repo
+  become: true
+  ansible.builtin.get_url:
+    url: https://download.docker.com/linux/fedora/docker-ce.repo
+    dest: /etc/yum.repos.d/docker-ce.repo
+    mode: "0644"
+  tags: [docker]
+
+- name: Install Docker CE packages
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ dnf_packages_docker }}"
+    state: present
+  tags: [docker]
+
+- name: Import Google signing key
+  become: true
+  ansible.builtin.rpm_key:
+    key: https://dl.google.com/linux/linux_signing_key.pub
+    state: present
+  tags: [gui]
+
+- name: Add Google Chrome repo
+  become: true
+  ansible.builtin.yum_repository:
+    name: google-chrome
+    description: google-chrome
+    baseurl: https://dl.google.com/linux/chrome/rpm/stable/x86_64
+    gpgkey: https://dl.google.com/linux/linux_signing_key.pub
+    gpgcheck: true
+    enabled: true
+  tags: [gui]
+
+- name: Import Microsoft signing key
+  become: true
+  ansible.builtin.rpm_key:
+    key: https://packages.microsoft.com/keys/microsoft.asc
+    state: present
+  tags: [gui]
+
+- name: Add VS Code repo
+  become: true
+  ansible.builtin.yum_repository:
+    name: code
+    description: Visual Studio Code
+    baseurl: https://packages.microsoft.com/yumrepos/vscode
+    gpgkey: https://packages.microsoft.com/keys/microsoft.asc
+    gpgcheck: true
+    enabled: true
+  tags: [gui]
+
+- name: Install GUI packages
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ dnf_packages_gui }}"
+    state: present
+  tags: [gui]
+
+- name: Install virtualization packages
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ dnf_packages_virt }}"
+    state: present
+  tags: [virt]
+
+- name: Install office packages
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ dnf_packages_office }}"
+    state: present
+  tags: [office]

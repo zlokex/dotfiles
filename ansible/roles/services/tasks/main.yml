@@ -1,0 +1,25 @@
+---
+- name: Enable and start docker
+  become: true
+  ansible.builtin.systemd:
+    name: docker.service
+    enabled: true
+    state: started
+
+- name: Enable and start libvirtd
+  become: true
+  ansible.builtin.systemd:
+    name: libvirtd.service
+    enabled: true
+    state: started
+
+- name: Add user to docker, libvirt, kvm groups
+  become: true
+  ansible.builtin.user:
+    name: "{{ ansible_user_id }}"
+    groups: "{{ item }}"
+    append: true
+  loop:
+    - docker
+    - libvirt
+    - kvm

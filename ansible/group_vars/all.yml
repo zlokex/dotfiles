@@ -1,0 +1,123 @@
+---
+dotfiles_repo_https: "https://github.com/zlokex/dotfiles.git"
+dotfiles_repo_ssh: "git@github.com:zlokex/dotfiles.git"
+dotfiles_repo_url: "{{ dotfiles_repo_https }}"
+dotfiles_path: "{{ ansible_user_dir }}/dotfiles"
+
+copr_repos:
+  - wezfurlong/wezterm-nightly
+  - dejan/lazygit
+  - lihaohong/yazi
+  - phracek/PyCharm
+  - the4runner/firefox-dev
+
+dnf_packages_cli:
+  - stow
+  - zsh
+  - zsh-autosuggestions
+  - zsh-syntax-highlighting
+  - git
+  - git-delta
+  - neovim
+  - vim-enhanced
+  - vim-X11
+  - tmux
+  - fzf
+  - fd-find
+  - ripgrep
+  - bat
+  - lsd
+  - zoxide
+  - thefuck
+  - lazygit
+  - yazi
+  - jq
+  - btop
+  - gh
+  - pandoc-cli
+
+dnf_packages_dev:
+  - gcc
+  - make
+  - cargo
+  - rust
+  - golang
+  - python3-pip
+  - dotnet-sdk-9.0
+  - dotnet-sdk-10.0
+  - podman
+  - kubectl
+  - helm
+  - k9s
+  - ansible
+  - azure-cli
+  - terraform
+
+dnf_packages_docker:
+  - docker-ce
+  - docker-ce-cli
+  - docker-buildx-plugin
+  - docker-compose-plugin
+
+dnf_packages_gui:
+  - alacritty
+  - kitty
+  - wezterm
+  - firefox
+  - firefox-dev
+  - google-chrome-stable
+  - code
+  - emacs
+  - ptyxis
+  - remmina
+  - papers
+  - texstudio
+  - texlive-scheme-full
+
+dnf_packages_virt:
+  - libvirt-daemon-kvm
+  - qemu-kvm
+  - qemu-guest-agent
+  - virt-install
+  - virt-manager
+  - virt-viewer
+
+dnf_packages_office:
+  - libreoffice-calc
+  - libreoffice-impress
+  - libreoffice-writer
+
+flatpak_apps:
+  - app.zen_browser.zen
+  - com.bitwarden.desktop
+  - io.podman_desktop.PodmanDesktop
+  - md.obsidian.Obsidian
+  - org.onlyoffice.desktopeditors
+
+nerd_font_families:
+  - Meslo
+  - JetBrainsMono
+
+nvm_version: "v0.40.1"
+
+kubernetes_minor: "v1.32"
+
+toolbox_install_dir: "{{ ansible_user_dir }}/.local/share/JetBrains/Toolbox"
+
+gnome_extension_uuids:
+  - appindicatorsupport@rgcjonas.gmail.com
+  - background-logo@fedorahosted.org
+  - caffeine@patapon.info
+  - clipboard-indicator@tudmotu.com
+  - dash-to-dock@micxgx.gmail.com
+  - just-perfection-desktop@just-perfection
+  - paperwm@paperwm.github.com
+  - switcher@landau.fi
+
+idea_plugins:
+  - IdeaVim
+  - com.joshestein.ideavim-quickscope
+  - com.magidc.ideavim.anyObject
+  - com.yelog.ideavim.cmdfloat
+  - com.julienphalip.ideavim.peekaboo
+  - com.andrewbrookins.wrap_to_column

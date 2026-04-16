@@ -1,0 +1,12 @@
+---
+- name: Get current login shell
+  ansible.builtin.command: getent passwd {{ ansible_user_id }}
+  register: passwd_entry
+  changed_when: false
+
+- name: Set default shell to zsh
+  become: true
+  ansible.builtin.user:
+    name: "{{ ansible_user_id }}"
+    shell: /usr/bin/zsh
+  when: "'/usr/bin/zsh' not in passwd_entry.stdout"

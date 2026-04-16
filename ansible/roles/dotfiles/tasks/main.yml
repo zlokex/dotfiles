@@ -1,0 +1,48 @@
+---
+- name: Check if dotfiles repo is already present
+  ansible.builtin.stat:
+    path: "{{ dotfiles_path }}/.git"
+  register: dotfiles_git_dir
+
+- name: Clone dotfiles repo
+  ansible.builtin.git:
+    repo: "{{ dotfiles_repo_url }}"
+    dest: "{{ dotfiles_path }}"
+    version: master
+  when: not dotfiles_git_dir.stat.exists
+
+- name: List stow packages (top-level dirs in repo)
+  ansible.builtin.shell: >-
+    set -o pipefail;
+    find . -maxdepth 1 -mindepth 1 -type d
+    ! -name '.git' ! -name '.idea' ! -name '.claude' ! -name '.cachebro' ! -name 'ansible'
+    -printf '%f\n'
+  args:
+    chdir: "{{ dotfiles_path }}"
+    executable: /bin/bash
+  register: stow_packages
+  changed_when: false
+
+- name: Check for Fedora skel files that would conflict with stow
+  ansible.builtin.stat:
+    path: "{{ ansible_user_dir }}/{{ item }}"
+  loop:
+    - .bashrc
+    - .bash_profile
+    - .bash_logout
+  register: skel_candidates
+
+- name: Back up conflicting skel files
+  ansible.builtin.command:
+    cmd: mv "{{ item.stat.path }}" "{{ item.stat.path }}.pre-stow.bak"
+  loop: "{{ skel_candidates.results }}"
+  when: item.stat.exists and not item.stat.islnk
+  loop_control:
+    label: "{{ item.item }}"
+
+- name: Run stow for every subdirectory
+  ansible.builtin.command:
+    cmd: stow --restow --target={{ ansible_user_dir }} {{ item }}
+    chdir: "{{ dotfiles_path }}"
+  loop: "{{ stow_packages.stdout_lines }}"
+  changed_when: false

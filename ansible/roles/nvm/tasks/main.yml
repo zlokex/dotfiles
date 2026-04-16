@@ -1,0 +1,17 @@
+---
+- name: Install nvm
+  ansible.builtin.shell: |
+    curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/{{ nvm_version }}/install.sh | bash
+  args:
+    creates: "{{ ansible_user_dir }}/.nvm/nvm.sh"
+
+- name: Install Node LTS via nvm
+  ansible.builtin.shell: |
+    export NVM_DIR="{{ ansible_user_dir }}/.nvm"
+    . "$NVM_DIR/nvm.sh"
+    nvm install --lts
+    nvm alias default 'lts/*'
+  args:
+    executable: /bin/bash
+  register: nvm_install
+  changed_when: "'is already installed' not in nvm_install.stdout"

@@ -1,0 +1,73 @@
+---
+# Follows the official install steps from JetBrains:
+# (https://www.jetbrains.com/help/toolbox-app/installation.html#toolbox_linux)
+#   1. Download tarball.
+#   2. Unpack with --strip-components=1 into the install dir.
+#   3. Run <install-dir>/bin/jetbrains-toolbox once.
+# Install dir is ~/.local/share/JetBrains/Toolbox — same place the
+# launcher writes its state on first run, so the dir is reused.
+
+- name: Ensure Toolbox install dir exists
+  ansible.builtin.file:
+    path: "{{ toolbox_install_dir }}"
+    state: directory
+    mode: "0755"
+
+- name: Ensure ~/.local/bin exists
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.local/bin"
+    state: directory
+    mode: "0755"
+
+- name: Query latest JetBrains Toolbox release
+  ansible.builtin.uri:
+    url: https://data.services.jetbrains.com/products/releases?code=TBA&latest=true&type=release
+    return_content: true
+  register: tba_release
+  changed_when: false
+
+- name: Set Toolbox download facts
+  ansible.builtin.set_fact:
+    toolbox_url: "{{ tba_release.json.TBA[0].downloads.linux.link }}"
+    toolbox_version: "{{ tba_release.json.TBA[0].version }}"
+
+- name: Check installed Toolbox version
+  ansible.builtin.command: "{{ toolbox_install_dir }}/bin/jetbrains-toolbox --version"
+  register: toolbox_installed
+  changed_when: false
+  failed_when: false
+
+- name: Download and extract Toolbox
+  when: toolbox_version not in (toolbox_installed.stdout | default(''))
+  block:
+    - name: Download Toolbox tarball
+      ansible.builtin.get_url:
+        url: "{{ toolbox_url }}"
+        dest: /tmp/jetbrains-toolbox.tar.gz
+        mode: "0644"
+
+    - name: Extract Toolbox into install dir
+      ansible.builtin.unarchive:
+        src: /tmp/jetbrains-toolbox.tar.gz
+        dest: "{{ toolbox_install_dir }}"
+        remote_src: true
+        extra_opts: [--strip-components=1]
+
+- name: Symlink jetbrains-toolbox onto PATH
+  ansible.builtin.file:
+    src: "{{ toolbox_install_dir }}/bin/jetbrains-toolbox"
+    dest: "{{ ansible_user_dir }}/.local/bin/jetbrains-toolbox"
+    state: link
+
+- name: Check for idea on PATH
+  ansible.builtin.command: which idea
+  register: idea_bin
+  changed_when: false
+  failed_when: false
+
+- name: Install IntelliJ / IdeaVim plugins
+  ansible.builtin.command: idea installPlugins {{ item }}
+  loop: "{{ idea_plugins }}"
+  when: idea_bin.rc == 0
+  changed_when: false
+  tags: [jetbrains-plugins]
