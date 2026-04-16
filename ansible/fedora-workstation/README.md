@@ -11,13 +11,13 @@ Run `bootstrap.sh` — it installs `ansible` + `git`, clones the repo if needed,
 pulls collection dependencies, and runs the playbook:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/zlokex/dotfiles/master/ansible/bootstrap.sh | bash
+curl -fsSL https://raw.githubusercontent.com/zlokex/dotfiles/master/ansible/fedora-workstation/bootstrap.sh | bash
 ```
 
 If the repo is already cloned:
 
 ```bash
-~/dotfiles/ansible/bootstrap.sh
+~/dotfiles/ansible/fedora-workstation/bootstrap.sh
 ```
 
 The playbook targets `localhost` via `ansible_connection=local`. `bootstrap.sh`
@@ -41,7 +41,7 @@ command-not-found prompt on a headless VM — see the warning above.
 Each role is tagged so pieces can be applied individually:
 
 ```bash
-cd ~/dotfiles/ansible
+cd ~/dotfiles/ansible/fedora-workstation
 ansible-galaxy collection install -r requirements.yml   # once
 ansible-playbook -K site.yml --tags fonts
 ansible-playbook -K site.yml --tags dotfiles,shell
@@ -75,7 +75,7 @@ Available tags: `copr`, `dnf`, `flatpak`, `fonts`, `dotfiles`, `shell`, `nvm`,
 ## Layout
 
 ```
-ansible/
+ansible/fedora-workstation/
 ├── ansible.cfg
 ├── inventory.ini
 ├── requirements.yml

@@ -13,11 +13,11 @@ Most of these are already installed/enabled by this repo's Ansible play
 (`site.yml`):
 
 - `libvirt-daemon-kvm`, `qemu-kvm`, `qemu-guest-agent`, `virt-install`,
-  `virt-manager`, `virt-viewer` — from `ansible/roles/dnf_packages`
+  `virt-manager`, `virt-viewer` — from `ansible/fedora-workstation/roles/dnf_packages`
   (`dnf_packages_virt`).
 - `libvirtd` enabled, user in `libvirt` + `kvm` groups — from
-  `ansible/roles/services`. Re-login after the first bootstrap so the group
-  membership is active (check with `id`).
+  `ansible/fedora-workstation/roles/services`. Re-login after the first bootstrap so
+  the group membership is active (check with `id`).
 - `terraform` — added to `dnf_packages_dev` by this change. On a host that
   predates that change: `sudo dnf install -y terraform`.
 - `openssl` (for the password hash) — installed by default on Fedora.
@@ -85,7 +85,7 @@ image volume is also destroyed and will be re-downloaded on the next apply.
   likely isn't up:
   `sudo virsh net-start default && sudo virsh net-autostart default`.
 - To re-run cloud-init (e.g. after editing user-data), `terraform taint
-  libvirt_cloudinit_disk.ci` and re-apply — or destroy/apply the whole stack.
+libvirt_cloudinit_disk.ci` and re-apply — or destroy/apply the whole stack.
 
 ## Stable identity across rebuilds
 

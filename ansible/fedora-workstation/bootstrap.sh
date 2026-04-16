@@ -16,7 +16,7 @@ if [ ! -d "$DOTFILES_PATH/.git" ]; then
     git clone "$DOTFILES_REPO" "$DOTFILES_PATH"
 fi
 
-cd "$DOTFILES_PATH/ansible"
+cd "$DOTFILES_PATH/ansible/fedora-workstation"
 
 echo ">>> Installing Ansible collection dependencies..."
 ansible-galaxy collection install -r requirements.yml
