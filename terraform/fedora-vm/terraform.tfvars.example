@@ -1,0 +1,12 @@
+# Copy to terraform.tfvars and edit.
+#
+# Required: SHA-512 crypt hash for the `fedora` user (console / GDM login).
+# Generate with:   openssl passwd -6
+user_password_hash = "$6$REPLACE_ME$..."
+
+# Optional overrides (defaults shown).
+# vm_name             = "fedora43-ws"
+# vcpus               = 4
+# memory_mib          = 8192
+# disk_gib            = 80
+# ssh_public_key_path = "~/.ssh/id_ed25519.pub"

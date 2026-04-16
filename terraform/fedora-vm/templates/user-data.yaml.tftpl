@@ -1,0 +1,44 @@
+#cloud-config
+hostname: ${hostname}
+fqdn: ${hostname}.local
+preserve_hostname: false
+
+users:
+  - name: fedora
+    gecos: Fedora
+    groups: [wheel, libvirt, kvm, docker]
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+    lock_passwd: false
+    passwd: ${user_password_hash}
+    ssh_authorized_keys:
+      - ${ssh_public_key}
+
+ssh_pwauth: true
+chpasswd:
+  expire: false
+
+ssh_keys:
+  rsa_private: |
+    ${indent(4, host_rsa_private)}
+  rsa_public: ${host_rsa_public}
+  ed25519_private: |
+    ${indent(4, host_ed25519_private)}
+  ed25519_public: ${host_ed25519_public}
+
+packages:
+  - qemu-guest-agent
+
+package_update: true
+package_upgrade: false
+
+runcmd:
+  - [ systemctl, enable, --now, qemu-guest-agent.service ]
+  - [ dnf, -y, group, install, workstation-product-environment ]
+  - [ systemctl, set-default, graphical.target ]
+  - [ systemctl, enable, gdm.service ]
+
+power_state:
+  mode: reboot
+  delay: now
+  message: "Rebooting after workstation group install"
