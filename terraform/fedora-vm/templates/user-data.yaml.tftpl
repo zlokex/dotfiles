@@ -28,12 +28,14 @@ ssh_keys:
 
 packages:
   - qemu-guest-agent
+  - spice-vdagent
 
 package_update: true
 package_upgrade: false
 
 runcmd:
   - [ systemctl, enable, --now, qemu-guest-agent.service ]
+  - [ systemctl, enable, --now, spice-vdagentd.service ]
   - [ dnf, -y, group, install, workstation-product-environment ]
   - [ systemctl, set-default, graphical.target ]
   - [ systemctl, enable, gdm.service ]
