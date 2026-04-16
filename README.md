@@ -4,242 +4,123 @@
 You should have your own repository and get inspired by this one.
 If you have any questions, feel free to open issues.
 
-## Dependecies
+## Automated setup (Ansible)
 
-### Stow (Optional)
+Reproduces this workstation on a fresh **Fedora** install — COPR repos, dnf
+packages, flatpaks, Nerd Fonts, dotfiles (stowed), zsh, nvm, JetBrains Toolbox,
+GNOME extensions, docker/libvirt. See
+[`ansible/fedora-workstation/README.md`](ansible/fedora-workstation/README.md)
+for details and tag-scoped reruns.
 
 ```bash
-# Fedora
-sudo dnf install stow
+# Fresh machine — installs ansible + git, clones the repo, runs site.yml
+curl -fsSL https://raw.githubusercontent.com/zlokex/dotfiles/master/ansible/fedora-workstation/bootstrap.sh | bash
+
+# Repo already cloned
+~/dotfiles/ansible/fedora-workstation/bootstrap.sh
 ```
 
-## Setup
+Log out and back in afterwards so the new shell, group memberships
+(`docker`, `libvirt`, `kvm`), and GNOME extensions take effect.
 
-Clone the repository and run stow \*/ to generate symlinks in the correct folders.
+## Local Fedora VM (Terraform)
+
+Provisions a local **Fedora Workstation 43** VM on KVM/libvirt — useful for
+testing the Ansible play end-to-end. Prerequisites (`libvirt`, `virt-install`,
+`terraform`) are covered by the Ansible play above. See
+[`terraform/fedora-vm/README.md`](terraform/fedora-vm/README.md) for SSH host
+key pinning, rebuild/rotation, and notes.
 
 ```bash
-# Fedora
+cd terraform/fedora-vm
+openssl passwd -6                     # hash for the `fedora` user
+cp terraform.tfvars.example terraform.tfvars
+$EDITOR terraform.tfvars              # paste hash, tweak sizes / ssh key path
+terraform init
+terraform apply                       # 5–15 min on first run
+terraform output ssh_command
+```
+
+## Manual steps
+
+The Ansible play covers everything below. Use these only when bootstrapping
+a host without Ansible, or when installing a single tool by hand.
+
+### Stow
+
+```bash
+sudo dnf install stow
 git clone this-repo
 cd repo
 stow */
 ```
 
-# Shell (Zsh)
-
-## Install
+### Shell (Zsh)
 
 ```bash
-# Fedora
-sudo dnf install zsh
+sudo dnf install zsh lsd zoxide fzf fd-find bat thefuck
 ```
 
-## Dependencies
-
-### lsd (Better ls)
+### Git
 
 ```bash
-# Fedora
-sudo dnf install lsd
+sudo dnf install git git-delta
 ```
 
-### Zoxide (Better cd)
+### Terminal (Alacritty)
+
+Config: `alacritty/.config/alacritty/alacritty.toml`.
 
 ```bash
-# Fedora
-sudo dnf install zoxide
-```
-
-### fzf (Fuzzy finder)
-
-```bash
-# Fedora
-sudo dnf install fzf
-```
-
-### fd (find alternative)
-
-```bash
-# Fedora
-sudo dnf install fd-find
-```
-
-### bat (Better cat)
-
-```bash
-# Fedora
-sudo dnf install bat
-```
-
-### thefuck (Autocorrect mistyped commands)
-
-```bash
-# Fedora
-sudo dnf install thefuck
-```
-
-## Setup
-
-# Git
-
-## Install
-
-```bash
-# Fedora
-sudo dnf install git
-```
-
-## Dependencies
-
-### Delta
-
-```bash
-# Fedora
-sudo dnf install git-delta
-```
-
-# Terminal (Alacritty)
-
-Config file is under dotfiles/alacritty/.config/alacritty/alacritty.toml
-
-## Install
-
-```bash
-# Fedora
-# Enable copr repository (Use at your own risk)
 sudo dnf copr enable pschyska/alacritty
 sudo dnf install alacritty
 ```
 
-## Dependencies
+### Terminal (WezTerm)
 
-### Nerd Font
+```bash
+sudo dnf copr enable wezfurlong/wezterm-nightly
+sudo dnf install wezterm
+```
 
-### Clone the Nerd Fonts Repository
+### Nerd Font (Meslo)
 
-Use the sparse-checkout to avoid downloading the entire repository
+Sparse-checkout avoids downloading the full Nerd Fonts repo.
 
 ```bash
 git clone --filter=blob:none --sparse https://github.com/ryanoasis/nerd-fonts.git ~/nerd-fonts
 cd ~/nerd-fonts
-# Spare checkout only the Meslo fonts
 git sparse-checkout add patched-fonts/Meslo
-```
-
-### Install the Font
-
-```bash
-# Install Meslo to ~/.local/share/fonts
 ./install.sh Meslo
-# Refresh the system's font cache to recognize the new fonts
 fc-cache -fv
-# Verify installation
-c-list | grep "Meslo"
+fc-list | grep Meslo
 ```
 
-# Terminal (WezTerm)
-
-## Install
+### Vimx (Vim with clipboard)
 
 ```bash
-# Fedora
-# Enable the Copr Repository (Official Nightly) (At your own risk)
-sudo dnf copr enable wezfurlong/wezterm-nightly
-# Install wezterm
-sudo dnf install wezterm
-```
-
-# Vimx
-
-Vim with clipboard support
-
-## Install
-
-```bash
-# Fedora
 sudo dnf install vim-X11
 ```
 
-```bash
-# Fedora
-sudo dnf install vim-X11
-```
+### IDE (JetBrains Toolbox + IntelliJ)
 
-## Dependencies
+Config: `ideavim/.ideavimrc`.
 
-## Setup
-
-# Tmux
-
-## Install
-
-## Dependencies
-
-## Setup
-
-# IDE (IntelliJ)
-
-This repository includes a dotfile for the ideavim plugin for intelliJ. It is located under dotfiles/ideavim/.ideavimrc
-
-## Install
-
-1. Download the Linux verion of JetBrains Toolbox from the official JetBrains site.
-2. Extract and install the downloaded .tar.gz file
+1. Download Linux JetBrains Toolbox from the official site.
+2. Extract and launch — it integrates under `~/.local/share/JetBrains/Toolbox`.
 
 ```bash
-# Extract the downloaded .tar.gz file
 tar -xzf jetbrains-toolbox-*.tar.gz
-# Run the application (This will launch the application and integrate it in ~/.local/share/JetBrains/Toolbox
 ./jetbrains-toolbox-*/jetbrains-toolbox
 ```
 
-3. Install your IDE of choice (e.g. IntelliJ IDEA) from the Toolbox
-
-## Dependencies
-
-### IdeaVim Plugin
-
-https://plugins.jetbrains.com/plugin/164-ideavim
+3. Install IntelliJ IDEA from Toolbox, then install the plugins:
 
 ```bash
 idea installPlugins IdeaVim
-```
-
-### IdeaVim-Quickscope Plugin
-
-https://plugins.jetbrains.com/plugin/19417-ideavim-quickscope
-
-```bash
 idea installPlugins com.joshestein.ideavim-quickscope
-```
-
-### Vim AnyObject Plugin
-
-https://plugins.jetbrains.com/plugin/28333-vim-anyobject
-
-```bash
 idea installPlugins com.magidc.ideavim.anyObject
-```
-
-### Vim CmdFloat Plugin
-
-https://plugins.jetbrains.com/plugin/28732-vim-cmdfloat
-
-```bash
 idea installPlugins com.yelog.ideavim.cmdfloat
-```
-
-### Vim Peekaboo Plugin
-
-https://plugins.jetbrains.com/plugin/25776-vim-peekaboo
-
-```bash
 idea installPlugins com.julienphalip.ideavim.peekaboo
-```
-
-### Wrap to Column Plugin
-
-https://plugins.jetbrains.com/plugin/7234-wrap-to-column
-
-```bash
 idea installPlugins com.andrewbrookins.wrap_to_column
 ```
