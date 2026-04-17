@@ -16,6 +16,8 @@
     - { role: fonts,        tags: [fonts] }
     - { role: dotfiles,     tags: [dotfiles] }
     - { role: shell,        tags: [shell] }
+    - { role: cargo_tools,  tags: [cargo] }
+    - { role: go_tools,     tags: [go] }
     - { role: nvm,          tags: [nvm, node] }
     - { role: neovim,       tags: [neovim] }
     - { role: vim,          tags: [vim] }

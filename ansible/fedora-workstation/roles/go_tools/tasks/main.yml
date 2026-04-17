@@ -1,0 +1,8 @@
+---
+- name: Install go packages
+  ansible.builtin.command: go install {{ item.module }}
+  args:
+    creates: "{{ ansible_user_dir }}/go/bin/{{ item.bin }}"
+  loop: "{{ go_packages }}"
+  loop_control:
+    label: "{{ item.bin }}"

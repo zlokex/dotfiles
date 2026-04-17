@@ -42,6 +42,7 @@ dnf_packages_dev:
   - cargo
   - rust
   - golang
+  - openssl-devel
   - python3-pip
   - dotnet-sdk-9.0
   - dotnet-sdk-10.0
@@ -97,6 +98,14 @@ flatpak_apps:
 nerd_font_families:
   - Meslo
   - JetBrainsMono
+
+cargo_crates:
+  - eza
+  - ripgrep_all
+
+go_packages:
+  - { module: "github.com/rfjakob/gocryptfs/v2@latest", bin: gocryptfs }
+  - { module: "github.com/joshmedeski/sesh/v2@latest",  bin: sesh }
 
 nvm_version: "v0.40.1"
 

@@ -1,0 +1,6 @@
+---
+- name: Install cargo crates
+  ansible.builtin.command: cargo install {{ item }}
+  loop: "{{ cargo_crates }}"
+  register: cargo_install
+  changed_when: "'is already installed' not in cargo_install.stderr"
