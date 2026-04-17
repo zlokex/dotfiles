@@ -170,6 +170,8 @@ export FZF_ALT_C_OPTS="--preview 'lsd --tree --color=always {} | head -200'"
 # Advanced customization of fzf options via _fzf_comprun function
 # - The first argument to the function is the name of the command.
 # - You should make sure to pass the rest of the arguments to fzf.
+# Enabled by command **<TAB>
+# Has default completions for: export, unset, unalias, ssh, telnet & kill
 _fzf_comprun() {
   local command=$1
   shift
