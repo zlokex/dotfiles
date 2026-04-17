@@ -52,7 +52,7 @@ a host without Ansible, or when installing a single tool by hand.
 sudo dnf install stow
 git clone this-repo
 cd repo
-stow */
+stow alacritty bash eza git ideavim kitty lsd nvim tridactyl vim wezterm yazi zsh
 ```
 
 ### Shell (Zsh)
