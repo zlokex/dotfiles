@@ -61,6 +61,19 @@ Available tags: `copr`, `dnf`, `flatpak`, `fonts`, `dotfiles`, `shell`, `nvm`,
 - **GNOME extensions** — installed best-effort via `gext`; if a version mismatch
   blocks one, install it from [extensions.gnome.org](https://extensions.gnome.org).
 
+## Refreshing extension settings
+
+PaperWM and Dash-to-Dock baseline settings are loaded from dconf dumps in
+`roles/gnome/files/*.dconf` and applied automatically by the `gnome` role.
+To update the baseline from the reference workstation:
+
+```bash
+dconf dump /org/gnome/shell/extensions/paperwm/      > $HOME/dotfiles/ansible/fedora-workstation/roles/gnome/files/paperwm.dconf
+dconf dump /org/gnome/shell/extensions/dash-to-dock/ > $HOME/dotfiles/ansible/fedora-workstation/roles/roles/gnome/files/dash-to-dock.dconf
+```
+
+Then commit. Re-running the `gnome` role on a target reloads the new values.
+
 ## Post-install
 
 1. Log out and back in so the new shell (zsh), group memberships (`docker`,

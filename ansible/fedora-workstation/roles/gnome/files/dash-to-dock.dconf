@@ -1,0 +1,17 @@
+[/]
+background-opacity=0.80000000000000004
+custom-theme-shrink=false
+dash-max-icon-size=40
+dock-fixed=true
+dock-position='LEFT'
+extend-height=true
+height-fraction=0.90000000000000002
+icon-size-fixed=false
+isolate-workspaces=false
+middle-click-action='launch'
+preferred-monitor=-2
+preferred-monitor-by-connector='eDP-1'
+shift-click-action='minimize'
+shift-middle-click-action='launch'
+show-apps-at-top=false
+show-windows-preview=true

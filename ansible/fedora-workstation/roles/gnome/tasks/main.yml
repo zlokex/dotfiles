@@ -44,3 +44,31 @@
     value: "{{ gnome_extension_uuids | to_json }}"
     state: present
   when: gext_cli.rc == 0
+
+- name: Ensure dconf staging dir exists
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.cache/ansible-dconf"
+    state: directory
+    mode: "0755"
+
+- name: Stage extension dconf dumps
+  ansible.builtin.copy:
+    src: "{{ item.name }}.dconf"
+    dest: "{{ ansible_user_dir }}/.cache/ansible-dconf/{{ item.name }}.dconf"
+    mode: "0644"
+  loop:
+    - { name: paperwm,      path: /org/gnome/shell/extensions/paperwm/ }
+    - { name: dash-to-dock, path: /org/gnome/shell/extensions/dash-to-dock/ }
+  loop_control:
+    label: "{{ item.name }}"
+  register: dconf_staged
+
+- name: Load extension dconf settings
+  ansible.builtin.shell: >-
+    dconf load {{ item.item.path }}
+    < {{ ansible_user_dir }}/.cache/ansible-dconf/{{ item.item.name }}.dconf
+  loop: "{{ dconf_staged.results }}"
+  loop_control:
+    label: "{{ item.item.name }}"
+  when: item.changed
+  changed_when: true
