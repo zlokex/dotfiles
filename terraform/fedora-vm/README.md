@@ -94,23 +94,26 @@ libvirt's dnsmasq hands out the same NAT IP every rebuild.
 
 **Why we pre-generate the VM's SSH host keys**: by default sshd generates
 fresh host keys on first boot, so every rebuild changes the VM's fingerprint
-and you'd hit `HOST IDENTIFICATION HAS CHANGED`. Instead, Terraform generates
-RSA + ED25519 keypairs once (`tls_private_key`) and cloud-init writes them to
-`/etc/ssh/ssh_host_*` on each boot — same IP, same fingerprint, stable
-`~/.ssh/known_hosts`.
+and you'd hit `HOST IDENTIFICATION HAS CHANGED`. Instead, a `null_resource`
+with `local-exec` runs `ssh-keygen` once into `host-keys/` (RSA 4096 +
+ED25519), and cloud-init writes those into `/etc/ssh/ssh_host_*` on each
+boot. The keys are plain files on disk — outside Terraform's resource graph
+— so they survive `terraform destroy`, and a rebuilt VM presents the same
+fingerprint as the last one.
 
-**Security note**: the VM's SSH host private keys live in `terraform.tfstate`
-(sensitive). State is local and `.gitignored`, so this is fine for a personal
-dev VM — but don't commit or copy state.
+**Security note**: the VM's host private keys live in
+`terraform/fedora-vm/host-keys/` (mode 600, `.gitignored`) — **not** in
+`terraform.tfstate`. Don't commit the directory or copy it around; if you
+move the VM to another workstation and want to keep its identity, copy
+`host-keys/` over deliberately.
 
 **Rotate the VM's identity** (e.g. after you've handed it off):
 
 ```sh
-terraform taint tls_private_key.host_rsa
-terraform taint tls_private_key.host_ed25519
+rm -rf host-keys/             # next apply regenerates via ssh-keygen
 # optionally also change var.vm_mac in terraform.tfvars
 terraform apply
-ssh-keygen -R <old-ip>   # clear the stale known_hosts entry
+ssh-keygen -R <old-ip>        # clear the stale known_hosts entry
 ```
 
 **Run two VMs side-by-side**: set a different `vm_mac` in each stack/tfvars

@@ -13,13 +13,36 @@ resource "libvirt_volume" "vm_disk" {
   format         = "qcow2"
 }
 
-resource "tls_private_key" "host_rsa" {
-  algorithm = "RSA"
-  rsa_bits  = 4096
+resource "null_resource" "host_keys_bootstrap" {
+  provisioner "local-exec" {
+    command = <<-EOT
+      set -eu
+      d="${path.module}/host-keys"
+      mkdir -p "$d"
+      [ -f "$d/ssh_host_rsa_key"     ] || ssh-keygen -q -t rsa     -b 4096 -N '' -C '' -f "$d/ssh_host_rsa_key"
+      [ -f "$d/ssh_host_ed25519_key" ] || ssh-keygen -q -t ed25519        -N '' -C '' -f "$d/ssh_host_ed25519_key"
+    EOT
+  }
 }
 
-resource "tls_private_key" "host_ed25519" {
-  algorithm = "ED25519"
+data "local_file" "host_rsa_private" {
+  filename   = "${path.module}/host-keys/ssh_host_rsa_key"
+  depends_on = [null_resource.host_keys_bootstrap]
+}
+
+data "local_file" "host_rsa_public" {
+  filename   = "${path.module}/host-keys/ssh_host_rsa_key.pub"
+  depends_on = [null_resource.host_keys_bootstrap]
+}
+
+data "local_file" "host_ed25519_private" {
+  filename   = "${path.module}/host-keys/ssh_host_ed25519_key"
+  depends_on = [null_resource.host_keys_bootstrap]
+}
+
+data "local_file" "host_ed25519_public" {
+  filename   = "${path.module}/host-keys/ssh_host_ed25519_key.pub"
+  depends_on = [null_resource.host_keys_bootstrap]
 }
 
 resource "libvirt_cloudinit_disk" "ci" {
@@ -27,13 +50,13 @@ resource "libvirt_cloudinit_disk" "ci" {
   pool = var.pool_name
 
   user_data = templatefile("${path.module}/templates/user-data.yaml.tftpl", {
-    hostname           = var.vm_name
-    ssh_public_key     = trimspace(file(pathexpand(var.ssh_public_key_path)))
-    user_password_hash = var.user_password_hash
-    host_rsa_private     = chomp(tls_private_key.host_rsa.private_key_openssh)
-    host_rsa_public      = chomp(tls_private_key.host_rsa.public_key_openssh)
-    host_ed25519_private = chomp(tls_private_key.host_ed25519.private_key_openssh)
-    host_ed25519_public  = chomp(tls_private_key.host_ed25519.public_key_openssh)
+    hostname             = var.vm_name
+    ssh_public_key       = trimspace(file(pathexpand(var.ssh_public_key_path)))
+    user_password_hash   = var.user_password_hash
+    host_rsa_private     = chomp(data.local_file.host_rsa_private.content)
+    host_rsa_public      = chomp(data.local_file.host_rsa_public.content)
+    host_ed25519_private = chomp(data.local_file.host_ed25519_private.content)
+    host_ed25519_public  = chomp(data.local_file.host_ed25519_public.content)
   })
 
   meta_data = templatefile("${path.module}/templates/meta-data.yaml.tftpl", {
