@@ -35,7 +35,8 @@ return {
       action_button('f', '', 'Find file', '<cmd>Telescope find_files<CR>', 'Function'),
       action_button('g', '󰈬', 'Find text', '<cmd>Telescope live_grep<CR>', 'Keyword'),
       action_button('r', '󰊄', 'Recent files', '<cmd>Telescope oldfiles<CR>', 'Number'),
-      action_button('p', '󰉋', 'Browse projects', '<cmd>Telescope projects<CR>', 'Constant'),
+      action_button('P', '󰥨', 'Find projects', '<cmd>lua _G.AlphaFindProjects()<CR>', 'Label'),
+      action_button('p', '󰉋', 'Recent projects', '<cmd>Telescope projects<CR>', 'Constant'),
       action_button('s', '󰑓', 'Restore last session', [[<cmd>lua require("persistence").load({ last = true })<CR>]], 'Type'),
       action_button('q', '󰐥', 'Quit', '<cmd>qa<CR>', 'Error'),
     }
@@ -57,6 +58,63 @@ return {
       end
       return '…' .. path
     end
+
+    local function find_projects()
+      local pickers = require 'telescope.pickers'
+      local finders = require 'telescope.finders'
+      local actions = require 'telescope.actions'
+      local action_state = require 'telescope.actions.state'
+      local conf = require('telescope.config').values
+
+      pickers
+        .new({}, {
+          prompt_title = 'Find projects',
+          finder = finders.new_oneshot_job({
+            'fd',
+            '--hidden',
+            '--no-ignore',
+            '--type', 'd',
+            '--prune',
+            '--max-depth', '9',
+            '--exclude', 'node_modules',
+            '--exclude', '.cache',
+            '--exclude', '.local/share',
+            '--exclude', '.cargo',
+            '--exclude', '.rustup',
+            '--exclude', '.npm',
+            '--exclude', '.nvm',
+            '--exclude', 'go/pkg',
+            '--exclude', '.venv',
+            '--exclude', '.mozilla',
+            [[^\.git$]],
+            vim.fn.expand '~',
+          }, {
+            entry_maker = function(line)
+              local path = line:gsub('/%.git/?$', '')
+              return {
+                value = path,
+                display = shorten_path(path),
+                ordinal = path,
+              }
+            end,
+          }),
+          sorter = conf.generic_sorter {},
+          attach_mappings = function(prompt_bufnr, _)
+            actions.select_default:replace(function()
+              local selection = action_state.get_selected_entry()
+              actions.close(prompt_bufnr)
+              if selection then
+                vim.cmd('cd ' .. vim.fn.fnameescape(selection.value))
+                require('telescope.builtin').find_files()
+              end
+            end)
+            return true
+          end,
+        })
+        :find()
+    end
+
+    _G.AlphaFindProjects = find_projects
 
     local function mru_button(file, sc)
       local short = shorten_path(file)
