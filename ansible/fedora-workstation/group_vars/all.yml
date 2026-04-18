@@ -123,6 +123,14 @@ gnome_extension_uuids:
   - paperwm@paperwm.github.com
   - switcher@landau.fi
 
+gnome_extension_dconf:
+  - name: paperwm
+    uuid: paperwm@paperwm.github.com
+    path: /org/gnome/shell/extensions/paperwm/
+  - name: dash-to-dock
+    uuid: dash-to-dock@micxgx.gmail.com
+    path: /org/gnome/shell/extensions/dash-to-dock/
+
 idea_plugins:
   - IdeaVim
   - com.joshestein.ideavim-quickscope
