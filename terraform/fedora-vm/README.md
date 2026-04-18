@@ -7,22 +7,38 @@ The VM boots from the upstream Fedora 43 Cloud Base qcow2 and uses cloud-init
 to install `@workstation-product-environment`, enable GDM, inject your SSH
 key, and reboot into a graphical GNOME session.
 
-## Prerequisites
+## Quick start
 
-Most of these are already installed/enabled by this repo's Ansible play
-(`site.yml`):
+```sh
+cd terraform/fedora-vm
+./bootstrap.sh
+```
 
-- `libvirt-daemon-kvm`, `qemu-kvm`, `qemu-guest-agent`, `virt-install`,
-  `virt-manager`, `virt-viewer` — from `ansible/fedora-workstation/roles/dnf_packages`
-  (`dnf_packages_virt`).
-- `libvirtd` enabled, user in `libvirt` + `kvm` groups — from
-  `ansible/fedora-workstation/roles/services`. Re-login after the first bootstrap so
-  the group membership is active (check with `id`).
-- `terraform` — added to `dnf_packages_dev` by this change. On a host that
-  predates that change: `sudo dnf install -y terraform`.
-- `openssl` (for the password hash) — installed by default on Fedora.
+`bootstrap.sh` is idempotent and Fedora-only. It:
 
-## Usage
+1. Installs `terraform` + the libvirt/QEMU/virt-manager stack
+   (`libvirt-daemon-kvm`, `qemu-kvm`, `qemu-guest-agent`, `virt-install`,
+   `virt-manager`, `virt-viewer`) — the same set the ansible
+   `dnf_packages` + `services` roles provide.
+2. Enables `libvirtd` and adds `$USER` to the `libvirt` + `kvm` groups.
+   If groups changed, it tells you to re-login and re-run; terraform
+   can't talk to `qemu:///system` until the new groups are active.
+3. Prompts you for the `fedora` user's password (via `openssl passwd -6`,
+   hidden input, asked twice) and then walks through each optional
+   override (`vm_name`, `vcpus`, `memory_mib`, `disk_gib`,
+   `ssh_public_key_path`) — press ENTER to accept the default shown in
+   brackets. Writes `terraform.tfvars` with mode 600.
+4. Runs `terraform init` + `terraform apply` (which shows the plan and
+   waits for your `yes`).
+
+First apply takes 5–15 min: base image download (~500 MB), cloud-init
+`dnf group install workstation-product-environment` (~1–2 GB), then a
+reboot into GDM.
+
+## Manual usage
+
+Skip `bootstrap.sh` if you've already run this repo's Ansible play
+(`site.yml`) — the prereqs are in place. From there:
 
 ```sh
 cd terraform/fedora-vm
@@ -39,10 +55,6 @@ terraform init
 terraform plan
 terraform apply
 ```
-
-First apply takes 5–15 min: base image download (~500 MB), cloud-init
-`dnf group install workstation-product-environment` (~1–2 GB), then a reboot
-into GDM.
 
 ## Reaching the VM
 
