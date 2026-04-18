@@ -72,6 +72,8 @@ dnf_packages_gui:
   - ptyxis
   - remmina
   - papers
+
+dnf_packages_latex:
   - texstudio
   - texlive-scheme-full
 
@@ -105,7 +107,10 @@ cargo_crates:
 
 go_packages:
   - { module: "github.com/rfjakob/gocryptfs/v2@latest", bin: gocryptfs }
-  - { module: "github.com/joshmedeski/sesh/v2@latest",  bin: sesh }
+  - { module: "github.com/joshmedeski/sesh/v2@latest", bin: sesh }
+
+npm_global_packages:
+  - "@github/copilot"
 
 nvm_version: "v0.40.1"
 

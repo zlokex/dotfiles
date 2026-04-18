@@ -1,0 +1,14 @@
+---
+- name: Install global npm packages
+  ansible.builtin.shell: |
+    export NVM_DIR="{{ ansible_user_dir }}/.nvm"
+    . "$NVM_DIR/nvm.sh"
+    npm install -g {{ item }}
+  args:
+    executable: /bin/bash
+  loop: "{{ npm_global_packages }}"
+  register: npm_install
+  changed_when: >-
+    'added' in npm_install.stdout
+    or ('changed' in npm_install.stdout
+        and 'changed 0 packages' not in npm_install.stdout)

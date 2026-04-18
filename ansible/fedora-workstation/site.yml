@@ -19,8 +19,10 @@
     - { role: cargo_tools,  tags: [cargo] }
     - { role: go_tools,     tags: [go] }
     - { role: nvm,          tags: [nvm, node] }
+    - { role: npm_packages, tags: [npm, node] }
     - { role: neovim,       tags: [neovim] }
     - { role: vim,          tags: [vim] }
     - { role: jetbrains,    tags: [jetbrains] }
+    - { role: claude_code,  tags: [claude-code] }
     - { role: gnome,        tags: [gnome] }
     - { role: services,     tags: [services] }

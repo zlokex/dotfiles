@@ -50,8 +50,8 @@ ansible-playbook -K site.yml --tags jetbrains-plugins   # only after IDE is inst
 ```
 
 Available tags: `copr`, `dnf`, `flatpak`, `fonts`, `dotfiles`, `shell`, `nvm`,
-`neovim`, `vim`, `jetbrains`, `gnome`, `services`, plus the dnf sub-tags
-`cli`, `dev`, `docker`, `gui`, `virt`, `office`.
+`npm`, `neovim`, `vim`, `jetbrains`, `claude-code`, `gnome`, `services`, plus
+the dnf sub-tags `cli`, `dev`, `docker`, `gui`, `virt`, `office`.
 
 ## What is _not_ automated
 
@@ -96,7 +96,8 @@ ansible/fedora-workstation/
 ├── bootstrap.sh
 ├── group_vars/all.yml
 └── roles/{copr,dnf_packages,flatpak,fonts,dotfiles,shell,
-          nvm,neovim,vim,jetbrains,gnome,services}/
+          cargo_tools,go_tools,nvm,npm_packages,neovim,vim,
+          jetbrains,claude_code,gnome,services}/
 ```
 
 Package lists, COPR repos, extension UUIDs, and plugin names all live in
