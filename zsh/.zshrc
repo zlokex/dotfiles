@@ -236,6 +236,8 @@ if [[ $TERM == "xterm-kitty" ]]; then
     alias ssh="TERM=xterm-256color command ssh"
 fi
 
+test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
+
 # ----- Claude Code: general-purpose (non-project) session -----
 # Runs Claude in ~/claude-sandbox so general chats stay isolated from any
 # project's sessions/memory. Subshell preserves the current terminal's cwd.
