@@ -14,7 +14,6 @@
       - luarocks
     state: present
 
-- name: Headless sync of lazy.nvim plugins
-  ansible.builtin.command: nvim --headless "+Lazy! sync" +qa
+- name: Headless restore of lazy.nvim plugins from lazy-lock.json
+  ansible.builtin.command: nvim --headless "+Lazy! restore" +qa
   changed_when: false
-  failed_when: false
