@@ -38,6 +38,7 @@ return {
       action_button('P', '󰥨', 'Find projects', '<cmd>lua _G.AlphaFindProjects()<CR>', 'Label'),
       action_button('p', '󰉋', 'Recent projects', '<cmd>Telescope projects<CR>', 'Constant'),
       action_button('s', '󰑓', 'Restore last session', [[<cmd>lua require("persistence").load({ last = true })<CR>]], 'Type'),
+      action_button('S', '󰍉', 'Browse sessions', [[<cmd>lua require("persistence").select()<CR>]], 'Type'),
       action_button('q', '󰐥', 'Quit', '<cmd>qa<CR>', 'Error'),
     }
 
