@@ -14,11 +14,16 @@ vim.keymap.set('i', 'jk', '<Esc>', { desc = 'Exit insert mode' })
 -- Exit terminal mode
 vim.keymap.set('t', 'jk', [[<C-\><C-n>]], { desc = 'Exit terminal mode' })
 
--- save file
-vim.keymap.set('n', '<C-s>', '<cmd> w <CR>', opts)
+-- save file (with autoformat)
+vim.keymap.set('n', '<C-s>', function()
+  vim.lsp.buf.format { async = false }
+  vim.cmd.write()
+end, opts)
 
--- save file without auto-formatting
-vim.keymap.set('n', '<leader>sn', '<cmd>noautocmd w <CR>', opts)
+-- format buffer without saving
+vim.keymap.set({ 'n', 'v' }, '<leader>f', function()
+  vim.lsp.buf.format { async = false }
+end, { desc = 'Format buffer (no save)' })
 
 -- quit file
 vim.keymap.set('n', '<C-q>', '<cmd> q <CR>', opts)
