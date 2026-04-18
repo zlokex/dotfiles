@@ -174,7 +174,9 @@ return {
         -- Use :AzurePipelinesAttach for pipeline files with non-matching names.
         root_dir = function(bufnr, on_dir)
           local name = vim.api.nvim_buf_get_name(bufnr)
-          if not name:match('azure%-pipelines') then return end
+          if not name:match 'azure%-pipelines' then
+            return
+          end
           on_dir(vim.fs.root(bufnr, { 'azure-pipelines.yml', '.git' }) or vim.fn.getcwd())
         end,
       },
