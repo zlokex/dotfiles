@@ -236,6 +236,14 @@ if [[ $TERM == "xterm-kitty" ]]; then
     alias ssh="TERM=xterm-256color command ssh"
 fi
 
+# ----- Claude Code: general-purpose (non-project) session -----
+# Runs Claude in ~/claude-sandbox so general chats stay isolated from any
+# project's sessions/memory. Subshell preserves the current terminal's cwd.
+# builtin cd bypasses the `cd`->`z` (zoxide) alias.
+ask()   { mkdir -p ~/claude-sandbox && (builtin cd ~/claude-sandbox && claude "$@"); }
+ask-c() { mkdir -p ~/claude-sandbox && (builtin cd ~/claude-sandbox && claude --continue); }
+ask-r() { mkdir -p ~/claude-sandbox && (builtin cd ~/claude-sandbox && claude --resume); }
+
 # }}}
 
 # Keep near end of file (needs to be after compinit)
