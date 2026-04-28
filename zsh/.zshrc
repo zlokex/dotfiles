@@ -219,9 +219,6 @@ export VISUAL="nvim"
 # ----- lsd (better ls) -----
 alias ls="lsd --color=always --long --git --icon=always"
 
-# ----- Zoxide (better cd) ----
-alias cd="z"
-
 alias k=kubectl
 
 # thefuck alias (Autocrrect mistyped commands)
@@ -249,4 +246,9 @@ ask-r() { mkdir -p ~/claude-sandbox && (builtin cd ~/claude-sandbox && claude --
 # }}}
 
 # Keep near end of file (needs to be after compinit)
-command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
+# Gate on interactive shells so non-interactive subshells (e.g. Claude tools)
+# don't trigger zoxide's hook-not-registered warning when cd is called.
+if [[ -o interactive ]] && command -v zoxide >/dev/null 2>&1; then
+  eval "$(zoxide init zsh)"
+  alias cd="z"
+fi
