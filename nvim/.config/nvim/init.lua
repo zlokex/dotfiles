@@ -39,6 +39,9 @@ require('lazy').setup({
   require 'plugins.project',
   require 'plugins.persistence',
   require 'plugins.undotree',
+  require 'plugins.java',
+  require 'plugins.overseer',
+  require 'plugins.dap',
 }, {
   rocks = { hererocks = true }, -- Bootstrap local Lua 5.1 for plugins that need luarocks (e.g. image.nvim)
 })

@@ -207,6 +207,9 @@ return {
     local ensure_installed = vim.tbl_keys(servers or {})
     vim.list_extend(ensure_installed, {
       'stylua', -- Used to format Lua code
+      'jdtls', -- Java language server (started by nvim-jdtls, not vim.lsp.enable)
+      'java-debug-adapter', -- DAP bundle, plugged into jdtls via init_options.bundles
+      'java-test', -- JUnit test bundle, also plugged into jdtls bundles
     })
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
