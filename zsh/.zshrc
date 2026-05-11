@@ -212,6 +212,9 @@ export PATH=$PATH:$(go env GOPATH)/bin
 export EDITOR="nvim"
 export VISUAL="nvim"
 
+# Disable telemetry for tools that respects this variable (e.g. gh)
+export DO_NOT_TRACK=true
+
 # }}}
 
 # Aliases ---------------------------------------------------------------------------------------------------------- {{{
