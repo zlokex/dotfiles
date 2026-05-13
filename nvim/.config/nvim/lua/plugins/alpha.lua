@@ -2,7 +2,7 @@ return {
   'goolord/alpha-nvim',
   dependencies = {
     'nvim-tree/nvim-web-devicons',
-    'ahmedkhalf/project.nvim',
+    'DrKJeff16/project.nvim',
     'folke/persistence.nvim',
   },
 
@@ -189,7 +189,7 @@ return {
         {
           type = 'group',
           val = function()
-            local projects = require('project_nvim').get_recent_projects()
+            local projects = require('project').get_recent_projects(true)
             local btns = {}
             local count = math.min(5, #projects)
             local shortcuts = { 'a', 'b', 'c', 'd', 'i' }
