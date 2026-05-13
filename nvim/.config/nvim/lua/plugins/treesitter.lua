@@ -20,6 +20,7 @@ return { -- Highlight, edit, and navigate code
       'json',
       'java',
       'groovy',
+      'c_sharp',
       'go',
       'gitignore',
       'graphql',

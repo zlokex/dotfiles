@@ -2,7 +2,15 @@ return {
   'neovim/nvim-lspconfig',
   dependencies = {
     -- Automatically install LSPs and related tools to stdpath for Neovim
-    { 'mason-org/mason.nvim', config = true }, -- NOTE: Must be loaded before dependants
+    {
+      'mason-org/mason.nvim', -- NOTE: Must be loaded before dependants
+      opts = {
+        registries = {
+          'github:mason-org/mason-registry',
+          'github:Crashdummyy/mason-registry', -- Provides the `roslyn` C# LSP package
+        },
+      },
+    },
     -- mason-lspconfig:
     -- - Bridges the gap between LSP config names (e.g. "lua_ls") and actual Mason package names (e.g. "lua-language-server").
     -- - Used here only to allow specifying language servers by their LSP name (like "lua_ls") in `ensure_installed`.
@@ -210,6 +218,9 @@ return {
       'jdtls', -- Java language server (started by nvim-jdtls, not vim.lsp.enable)
       'java-debug-adapter', -- DAP bundle, plugged into jdtls via init_options.bundles
       'java-test', -- JUnit test bundle, also plugged into jdtls bundles
+      'roslyn', -- C# language server (started by roslyn.nvim, not vim.lsp.enable)
+      'netcoredbg', -- C# DAP adapter
+      'csharpier', -- C# formatter (sourced by none-ls)
     })
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 

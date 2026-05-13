@@ -40,6 +40,7 @@ require('lazy').setup({
   require 'plugins.persistence',
   require 'plugins.undotree',
   require 'plugins.java',
+  require 'plugins.csharp',
   require 'plugins.overseer',
   require 'plugins.dap',
 }, {
